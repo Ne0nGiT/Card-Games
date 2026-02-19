@@ -3,47 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>🃏 Card Games – Tiến Lên & Xì Dách</title>
+<title>🃏 Card Games</title>
 <style>
-/* @import PHẢI đứng đầu tiên */
+/* @import PHẢI đứng đầu */
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&display=swap');
 
-/* ===== RESET ===== */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ===== THEME VARS ===== */
+/* ===== THEME ===== */
 :root {
-  --felt:        #2a5c3e;
-  --felt-dark:   #1e4530;
-  --surface:     rgba(0,0,0,0.25);
-  --surface2:    rgba(0,0,0,0.18);
-  --card-bg:     #faf8f3;
-  --card-border: #d4c9b0;
-  --card-shadow: rgba(0,0,0,0.35);
-  --text:        #e8f5ed;
-  --text-dim:    rgba(232,245,237,0.65);
-  --accent:      #d4aa50;
-  --red-card:    #c0392b;
-  --green-btn:   #2e7d52;
-  --blue-btn:    #1f618d;
-  --danger-btn:  #922b21;
-  --border:      rgba(255,255,255,0.1);
-  --highlight:   #4caf6e;
-  --win:         #27ae60;
-  --lose:        #e74c3c;
+  --felt:      #2a5c3e; --felt-dark: #1e4530;
+  --surface:   rgba(0,0,0,0.25); --surface2: rgba(0,0,0,0.18);
+  --card-bg:   #faf8f3; --card-border: #d4c9b0; --card-shadow: rgba(0,0,0,0.35);
+  --text:      #e8f5ed; --text-dim: rgba(232,245,237,0.65);
+  --accent:    #d4aa50; --red-card: #c0392b;
+  --green-btn: #2e7d52; --blue-btn: #1f618d; --danger-btn: #922b21;
+  --border:    rgba(255,255,255,0.1);
+  --highlight: #4caf6e; --win: #27ae60; --lose: #e74c3c;
 }
 [data-theme="light"] {
-  --felt:        #8ab89a;
-  --felt-dark:   #6a9e7a;
-  --surface:     rgba(0,0,0,0.12);
-  --surface2:    rgba(0,0,0,0.07);
-  --card-bg:     #fff;
-  --card-border: #b0a090;
-  --card-shadow: rgba(0,0,0,0.2);
-  --text:        #1a2e22;
-  --text-dim:    rgba(26,46,34,0.6);
-  --accent:      #8b6200;
-  --border:      rgba(0,0,0,0.08);
+  --felt: #8ab89a; --felt-dark: #6a9e7a;
+  --surface: rgba(0,0,0,0.12); --surface2: rgba(0,0,0,0.07);
+  --card-bg: #fff; --card-border: #b0a090; --card-shadow: rgba(0,0,0,0.2);
+  --text: #1a2e22; --text-dim: rgba(26,46,34,0.6);
+  --accent: #8b6200; --border: rgba(0,0,0,0.08);
 }
 
 /* ===== BASE ===== */
@@ -53,15 +36,12 @@ body {
   background-image:
     radial-gradient(ellipse at 20% 30%, rgba(255,255,255,0.04) 0%, transparent 60%),
     radial-gradient(ellipse at 80% 70%, rgba(0,0,0,0.15) 0%, transparent 60%);
-  color: var(--text);
-  min-height: 100dvh;
-  overflow-x: hidden;
-  user-select: none;
+  color: var(--text); min-height: 100dvh;
+  overflow-x: hidden; user-select: none;
   -webkit-tap-highlight-color: transparent;
 }
 body::before {
-  content: '';
-  position: fixed; inset: 0;
+  content: ''; position: fixed; inset: 0;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4'%3E%3Ccircle cx='1' cy='1' r='0.6' fill='rgba(255,255,255,0.03)'/%3E%3C/svg%3E");
   pointer-events: none; z-index: 0;
 }
@@ -71,12 +51,12 @@ body::before {
 .screen.active { display: flex; flex-direction: column; }
 
 /* ===== MENU ===== */
-#menu { align-items: center; justify-content: center; gap: 28px; padding: 30px 20px; }
-.menu-logo { text-align: center; margin-bottom: 10px; }
+#menu { align-items: center; justify-content: center; gap: 24px; padding: 30px 20px; }
+.menu-logo { text-align: center; margin-bottom: 4px; }
 .menu-logo h1 {
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: clamp(2.2rem, 7vw, 3.5rem); font-weight: 900;
-  color: var(--accent); letter-spacing: 0.02em; line-height: 1.1;
+  font-size: clamp(2.2rem, 7vw, 3.5rem); font-weight: 900; color: var(--accent);
+  letter-spacing: 0.02em; line-height: 1.1;
   text-shadow: 0 2px 20px rgba(212,170,80,0.4), 0 1px 3px rgba(0,0,0,0.5);
 }
 .menu-logo .subtitle {
@@ -90,13 +70,1777 @@ body::before {
   transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s;
   backdrop-filter: blur(4px); position: relative; overflow: hidden;
 }
-.mode-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%); pointer-events: none; }
+.mode-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.05), transparent); pointer-events: none; }
 .mode-card:hover  { transform: translateY(-6px) scale(1.02); box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 1px var(--accent); }
-.mode-card:active { transform: translateY(-2px) scale(0.99); }
+.mode-card:active { transform: scale(0.98); }
 .mode-icon { font-size: 3.2rem; margin-bottom: 14px; display: block; }
 .mode-card h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--accent); margin-bottom: 8px; }
 .mode-card p  { font-size: 0.83rem; color: var(--text-dim); line-height: 1.5; }
-.menu-footer  { color: var(--text-dim); font-size: 0.75rem; }
+.menu-footer { color: var(--text-dim); font-size: 0.75rem; text-align: center; }
+
+/* Continue bar */
+.continue-bar {
+  display: flex; gap: 8px; align-items: center; justify-content: center;
+  background: var(--surface); border: 1px solid rgba(212,170,80,0.3);
+  border-radius: 12px; padding: 10px 18px; flex-wrap: wrap;
+}
+.continue-bar span { font-size: 0.85rem; color: var(--text-dim); }
+
+/* ===== TOPBAR ===== */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 14px; background: var(--felt-dark);
+  border-bottom: 1px solid var(--border); box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  flex-shrink: 0; position: relative; z-index: 10;
+}
+.topbar-title   { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--accent); font-weight: 700; }
+.topbar-actions { display: flex; gap: 6px; align-items: center; }
+
+/* ===== BUTTONS ===== */
+.btn {
+  border: none; border-radius: 8px; font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem; font-weight: 600; cursor: pointer; padding: 9px 18px;
+  transition: all 0.18s; color: #fff; background: var(--green-btn);
+  letter-spacing: 0.01em; position: relative; overflow: hidden;
+}
+.btn::after { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0); transition: background 0.15s; }
+.btn:hover::after { background: rgba(255,255,255,0.12); }
+.btn:active { transform: scale(0.96); }
+.btn.accent { background: var(--accent); color: #1a2e22; font-weight: 700; }
+.btn.accent:hover { background: #e8c060; }
+.btn.blue   { background: var(--blue-btn); }
+.btn.danger { background: var(--danger-btn); }
+.btn.sm     { padding: 6px 12px; font-size: 0.8rem; border-radius: 6px; }
+.btn:disabled { opacity: 0.38; cursor: not-allowed; transform: none; }
+.btn:disabled::after { display: none; }
+
+.icon-btn {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 7px;
+  color: var(--text); font-size: 0.78rem; padding: 5px 10px; cursor: pointer;
+  transition: all 0.18s; font-family: inherit; font-weight: 500;
+}
+.icon-btn:hover { background: var(--surface2); border-color: var(--accent); }
+
+.lang-btn {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 7px;
+  color: var(--text); font-size: 0.75rem; padding: 5px 10px; cursor: pointer;
+  transition: all 0.18s; font-family: inherit; font-weight: 800; letter-spacing: 0.06em;
+}
+.lang-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ===== PLAYING CARDS ===== */
+.card {
+  width: 58px; height: 84px; background: var(--card-bg);
+  border: 1.5px solid var(--card-border); border-radius: 8px;
+  display: flex; flex-direction: column; align-items: flex-start;
+  padding: 4px 5px; cursor: pointer; position: relative; flex-shrink: 0;
+  box-shadow: 2px 3px 8px var(--card-shadow);
+  transition: transform 0.15s cubic-bezier(.34,1.56,.64,1), box-shadow 0.15s, border-color 0.12s;
+  font-size: 0.82rem; font-weight: 700; color: #1a1a1a; font-family: 'DM Sans', sans-serif;
+}
+.card-top { display: flex; flex-direction: column; align-items: center; line-height: 1.1; }
+.card-rank    { font-size: 0.88rem; font-weight: 800; }
+.card-suit-sm { font-size: 0.7rem; }
+.card-center  { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); font-size: 1.3rem; pointer-events: none; }
+.card-bot     { position: absolute; bottom: 3px; right: 4px; transform: rotate(180deg); display: flex; flex-direction: column; align-items: center; line-height: 1.1; }
+.card.red      { color: var(--red-card); }
+.card.selected { transform: translateY(-18px) scale(1.05); box-shadow: 0 10px 25px rgba(0,0,0,0.45), 0 0 0 2px var(--accent); border-color: var(--accent); z-index: 20; }
+.card.playable { box-shadow: 2px 3px 8px var(--card-shadow), 0 0 0 2px var(--highlight); }
+.card.back     { background: linear-gradient(135deg, #1a3a8a, #1e4db8); cursor: default; border-color: #2952c8; }
+.card.sm       { width: 36px; height: 52px; font-size: 0.65rem; padding: 2px 3px; border-radius: 5px; cursor: default; }
+.card.sm .card-center { font-size: 0.9rem; }
+.card.sm .card-rank   { font-size: 0.65rem; }
+.card.sm .card-suit-sm{ font-size: 0.55rem; }
+
+/* Card fly-in animation */
+@keyframes cardArrival {
+  from { opacity: 0; transform: translateY(-55px) scale(0.5) rotate(-12deg); }
+  to   { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+}
+.card-anim-in { animation: cardArrival 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+
+/* ===== TIẾN LÊN ===== */
+.tl-layout {
+  flex: 1; display: grid; grid-template-rows: auto 1fr auto auto;
+  gap: 8px; padding: 8px 10px; max-width: 980px; margin: 0 auto; width: 100%;
+}
+.bots-row { display: flex; gap: 8px; justify-content: center; }
+.bot-slot {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 8px 10px; flex: 1; max-width: 200px; min-width: 80px;
+  transition: box-shadow 0.2s, border-color 0.2s; position: relative;
+}
+.bot-slot.active-turn { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(212,170,80,0.35), 0 0 20px rgba(212,170,80,0.15); }
+.bot-slot.finished    { border-color: var(--highlight); opacity: 0.75; }
+.bot-name { font-size: 0.73rem; color: var(--text-dim); margin-bottom: 6px; font-weight: 600; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bot-cards-wrap { display: flex; flex-wrap: wrap; gap: 2px; justify-content: center; min-height: 30px; align-items: center; }
+.finish-badge {
+  position: absolute; top: -6px; right: -6px;
+  background: var(--accent); color: #1a2e22; font-size: 0.65rem; font-weight: 800;
+  border-radius: 50%; width: 22px; height: 22px;
+  display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+.play-area {
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 14px;
+  padding: 12px; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: 8px; min-height: 120px;
+}
+.turn-label { font-size: 0.85rem; font-weight: 600; color: var(--accent); text-align: center; font-family: 'Playfair Display', serif; }
+.played-row { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; min-height: 88px; align-items: center; }
+.play-hint  { font-size: 0.78rem; color: var(--text-dim); text-align: center; }
+.player-area { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 10px; }
+.player-label { display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: var(--text-dim); margin-bottom: 8px; font-weight: 600; }
+.hand-scroll { display: flex; overflow-x: auto; padding-bottom: 6px; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; }
+.hand-scroll::-webkit-scrollbar { height: 4px; }
+.hand-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 2px; }
+.hand-scroll .card { margin-left: -12px; transition: margin 0.15s, transform 0.15s cubic-bezier(.34,1.56,.64,1), box-shadow 0.15s, border-color 0.12s; }
+.hand-scroll .card:first-child { margin-left: 0; }
+.hand-scroll .card:hover    { z-index: 15; margin-left: -4px; }
+.hand-scroll .card.selected { z-index: 20; margin-left: -4px; }
+.action-bar { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; padding: 4px 0; }
+
+/* ===== XÌ DÁCH ===== */
+.xd-layout { flex: 1; display: flex; flex-direction: column; gap: 10px; padding: 10px 12px; max-width: 720px; margin: 0 auto; width: 100%; }
+.xd-zone { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; text-align: center; }
+.xd-zone h3 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--accent); margin-bottom: 10px; }
+.xd-cards-row   { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; min-height: 88px; align-items: center; }
+.xd-score-label { margin-top: 8px; font-size: 1rem; font-weight: 700; color: var(--text); }
+.xd-center-panel { display: flex; flex-direction: column; gap: 10px; align-items: center; }
+.chip-bar { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 20px; text-align: center; font-size: 0.88rem; width: 100%; }
+.chip-bar .val { color: var(--accent); font-size: 1.25rem; font-weight: 800; font-family: 'Playfair Display', serif; }
+.bet-row       { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
+.xd-action-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+
+/* ===== OVERLAYS ===== */
+.overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.72); display: flex; align-items: center; justify-content: center; z-index: 300; animation: fadeIn 0.25s ease; backdrop-filter: blur(3px); }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.result-box {
+  background: var(--felt-dark); border: 1px solid var(--border); border-radius: 20px;
+  padding: 36px 40px; text-align: center; max-width: 360px; width: 90%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6); animation: popIn 0.3s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes popIn { from { transform: scale(0.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.result-box .result-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; margin-bottom: 10px; }
+.result-box .result-title.win  { color: var(--win); }
+.result-box .result-title.lose { color: var(--lose); }
+.result-box .result-title.draw { color: var(--accent); }
+.result-box .result-desc { color: var(--text-dim); font-size: 0.92rem; line-height: 1.6; margin-bottom: 20px; }
+.result-box .result-btns { display: flex; gap: 10px; justify-content: center; }
+
+.notif {
+  position: fixed; top: 64px; left: 50%; transform: translateX(-50%);
+  background: rgba(26,46,34,0.92); border: 1px solid var(--border); backdrop-filter: blur(8px);
+  color: var(--text); padding: 10px 22px; border-radius: 30px;
+  font-size: 0.88rem; font-weight: 600; z-index: 400;
+  pointer-events: none; animation: notifPop 2.4s ease forwards; white-space: nowrap;
+}
+[data-theme="light"] .notif { background: rgba(255,255,255,0.92); }
+@keyframes notifPop { 0%{opacity:0;top:55px} 10%{opacity:1;top:64px} 75%{opacity:1} 100%{opacity:0;top:80px} }
+
+/* ===== ROTATE HINT ===== */
+#rotate-hint {
+  display: none; position: fixed; inset: 0; z-index: 9999;
+  background: var(--felt-dark); flex-direction: column;
+  align-items: center; justify-content: center; gap: 18px;
+  text-align: center; padding: 30px; pointer-events: none;
+}
+#rotate-hint .ricon { font-size: 4.5rem; animation: rotPh 1.8s ease-in-out infinite; }
+@keyframes rotPh { 0%{transform:rotate(0)} 35%{transform:rotate(-90deg)} 65%{transform:rotate(-90deg)} 100%{transform:rotate(0)} }
+#rotate-hint h2 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--accent); }
+#rotate-hint p  { color: var(--text-dim); font-size: 0.88rem; line-height: 1.6; max-width: 280px; }
+@media (max-width:768px) and (orientation:portrait) { body.in-game #rotate-hint { display: flex; } }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width:460px) {
+  .card { width: 50px; height: 74px; padding: 3px 4px; }
+  .card.sm { width: 28px; height: 40px; }
+  .card-center { font-size: 1.1rem; }
+  .card.sm .card-center { font-size: 0.75rem; }
+  .mode-card { width: 230px; padding: 22px; }
+  .result-box { padding: 28px 24px; }
+}
+@media (orientation:landscape) and (max-height:480px) {
+  .tl-layout { gap: 5px; padding: 5px 8px; }
+  .play-area { min-height: 90px; padding: 8px; }
+  .card { width: 46px; height: 66px; }
+  .card.sm { width: 24px; height: 35px; }
+  .card-center { font-size: 1rem; }
+  .card.sm .card-center { font-size: 0.7rem; }
+  #menu { padding: 15px; gap: 15px; }
+  .mode-card { padding: 16px 20px; }
+  .mode-icon { font-size: 2.2rem; margin-bottom: 8px; }
+  .menu-logo h1 { font-size: 2rem; }
+}
+/* ===== TUTORIAL ===== */
+.tut-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(0,0,0,0.82); backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  animation: fadeIn 0.2s ease;
+}
+.tut-box {
+  background: var(--felt-dark); border: 1px solid rgba(212,170,80,0.35);
+  border-radius: 20px; padding: 28px 30px; max-width: 420px; width: 92%;
+  max-height: 90dvh; overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  animation: popIn 0.28s cubic-bezier(.34,1.56,.64,1);
+}
+.tut-box h2 {
+  font-family: 'Playfair Display', serif; color: var(--accent);
+  font-size: 1.35rem; margin-bottom: 16px; text-align: center;
+}
+.tut-section { margin-bottom: 14px; }
+.tut-section h3 {
+  font-size: 0.82rem; font-weight: 700; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 6px;
+}
+.tut-section p  { font-size: 0.88rem; color: var(--text-dim); line-height: 1.6; }
+.tut-section ul { padding-left: 16px; margin: 0; }
+.tut-section li { font-size: 0.86rem; color: var(--text-dim); line-height: 1.7; }
+.tut-close {
+  display: block; width: 100%; margin-top: 18px;
+}
+</style>
+</head>
+<body>
+
+<!-- ROTATE HINT -->
+<div id="rotate-hint">
+  <div class="ricon">📱</div>
+  <h2 data-i18n="rotateTitle">Xoay màn hình ngang</h2>
+  <p  data-i18n="rotateDesc">Game này chơi tốt nhất ở màn hình ngang. Hãy xoay điện thoại!</p>
+</div>
+
+<!-- MENU -->
+<div class="screen active" id="menu">
+  <div style="position:absolute;top:14px;right:14px;z-index:5;display:flex;gap:8px">
+    <button class="lang-btn" id="menu-lang-btn" onclick="toggleLang()">EN</button>
+    <button class="icon-btn" id="menu-theme-btn" onclick="toggleTheme()">☀️</button>
+  </div>
+  <div class="menu-logo">
+    <div style="font-size:2.8rem;margin-bottom:6px">🃏</div>
+    <h1 data-i18n="menuTitle">Card Games</h1>
+    <div class="subtitle" data-i18n="menuSub">Tiến Lên · Xì Dách</div>
+  </div>
+  <div class="menu-cards-row">
+    <div class="mode-card" onclick="startTienLen()">
+      <span class="mode-icon">🀄</span>
+      <h2 data-i18n="tlName">Tiến Lên Miền Nam</h2>
+      <p  data-i18n="tlDesc">52 lá · 4 người · Đánh hết bài trước</p>
+    </div>
+    <div class="mode-card" onclick="startXiDach()">
+      <span class="mode-icon">🂡</span>
+      <h2 data-i18n="xdName">Xì Dách</h2>
+      <p  data-i18n="xdDesc">Player vs Dealer · Không quá 21 điểm</p>
+    </div>
+  </div>
+  <div class="continue-bar" id="tl-continue-bar" style="display:none">
+    <span data-i18n="continueHint">Có ván Tiến Lên đang dở:</span>
+    <button class="btn accent sm" onclick="tlContinue()" data-i18n="continueGame">▶ Tiếp tục</button>
+    <button class="btn danger sm"  onclick="tlDeleteSave()" data-i18n="deleteSave">✕ Xóa</button>
+  </div>
+  <div class="menu-footer" data-i18n="menuFooter">© 2026 Card Games · Offline</div>
+</div>
+
+<!-- TIẾN LÊN -->
+<div class="screen" id="tienlen">
+  <div class="topbar">
+    <div class="topbar-title" data-i18n="tlName">Tiến Lên Miền Nam</div>
+    <div class="topbar-actions">
+      <button class="icon-btn sfx-btn" onclick="SFX.toggle()">🔊</button>
+      <button class="icon-btn" onclick="showTutorial('tl')">❓</button>
+      <button class="lang-btn" id="tl-lang-btn" onclick="toggleLang()">EN</button>
+      <button class="icon-btn" id="tl-theme-btn" onclick="toggleTheme()">☀️</button>
+      <button class="icon-btn" onclick="goMenu()">🏠</button>
+    </div>
+  </div>
+  <div class="tl-layout">
+    <div class="bots-row" id="tl-bots-row"></div>
+    <div class="play-area">
+      <div class="turn-label" id="tl-turn-label"></div>
+      <div class="played-row" id="tl-played-row"></div>
+      <div class="play-hint"  id="tl-hint"></div>
+    </div>
+    <div class="player-area">
+      <div class="player-label">
+        <span>
+          <span data-i18n="you">👤 Bạn</span>&nbsp;·&nbsp;<span id="tl-card-count">13</span>
+          <span data-i18n="cards"> lá</span>
+        </span>
+        <span id="tl-player-info" style="color:var(--accent)"></span>
+      </div>
+      <div class="hand-scroll" id="tl-hand"></div>
+    </div>
+    <div class="action-bar">
+      <button class="btn accent" id="tl-play-btn" onclick="tlPlay()" disabled data-i18n="playBtn">Đánh ▶</button>
+      <button class="btn danger" id="tl-pass-btn" onclick="tlPass()" disabled data-i18n="passBtn">Bỏ qua ✖</button>
+    </div>
+  </div>
+</div>
+
+<!-- XÌ DÁCH -->
+<div class="screen" id="xidach">
+  <div class="topbar">
+    <div class="topbar-title" data-i18n="xdName">Xì Dách</div>
+    <div class="topbar-actions">
+      <button class="icon-btn sfx-btn" onclick="SFX.toggle()">🔊</button>
+      <button class="icon-btn" onclick="showTutorial('xd')">❓</button>
+      <button class="lang-btn" id="xd-lang-btn" onclick="toggleLang()">EN</button>
+      <button class="icon-btn" id="xd-theme-btn" onclick="toggleTheme()">☀️</button>
+      <button class="icon-btn" onclick="goMenu()">🏠</button>
+    </div>
+  </div>
+  <div class="xd-layout">
+    <div class="xd-zone">
+      <h3 data-i18n="dealer">🤖 Dealer</h3>
+      <div class="xd-cards-row" id="xd-dealer-cards"></div>
+      <div class="xd-score-label" id="xd-dealer-score"></div>
+    </div>
+    <div class="xd-center-panel">
+      <div class="chip-bar">
+        <span data-i18n="chipsLabel">💰 Chips:</span>
+        <span class="val" id="xd-chips">1000</span>
+        &ensp;|&ensp;
+        <span data-i18n="betLabel">Cược:</span>
+        <span class="val" id="xd-bet-disp" style="color:#e8b84b">0</span>
+      </div>
+      <div class="bet-row" id="xd-bet-row">
+        <button class="btn sm blue" onclick="xdBet(10)">+10</button>
+        <button class="btn sm blue" onclick="xdBet(25)">+25</button>
+        <button class="btn sm blue" onclick="xdBet(50)">+50</button>
+        <button class="btn sm blue" onclick="xdBet(100)">+100</button>
+        <button class="btn sm danger" onclick="xdClearBet()" data-i18n="clear">Xóa</button>
+        <button class="btn sm accent" onclick="xdDeal()"     data-i18n="deal">Chia bài 🃏</button>
+      </div>
+      <div class="xd-action-row" id="xd-game-row" style="display:none">
+        <button class="btn accent" onclick="xdHit()"         data-i18n="hit">Rút thêm ➕</button>
+        <button class="btn danger" onclick="xdStand()"       data-i18n="stand">Dừng ✋</button>
+
+      </div>
+    </div>
+    <div class="xd-zone">
+      <h3 data-i18n="you">👤 Bạn</h3>
+      <div class="xd-cards-row" id="xd-player-cards"></div>
+      <div class="xd-score-label" id="xd-player-score"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   I18N — khai báo TRƯỚC mọi thứ để t() luôn sẵn sàng
+   ============================================================ */
+var LANG = (function () {
+  try { return localStorage.getItem('lang') || 'vi'; } catch (e) { return 'vi'; }
+})();
+
+var STRINGS = {
+  vi: {
+    menuTitle:'Card Games', menuSub:'Tiến Lên · Xì Dách',
+    tlName:'Tiến Lên Miền Nam', tlDesc:'52 lá · 4 người · Đánh hết bài trước',
+    xdName:'Xì Dách', xdDesc:'Player vs Dealer · Không quá 21 điểm',
+    menuFooter:'© 2026 Card Games · Offline',
+    continueHint:'Có ván Tiến Lên đang dở:',
+    continueGame:'▶ Tiếp tục', deleteSave:'✕ Xóa ván',
+    sort:'⇅ Sắp xếp', you:'👤 Bạn', cards:' lá',
+    playBtn:'Đánh ▶', passBtn:'Bỏ qua ✖',
+    dealer:'🤖 Dealer', chipsLabel:'💰 Chips:', betLabel:'Cược:',
+    clear:'Xóa', deal:'Chia bài 🃏', hit:'Rút thêm ➕', stand:'Dừng ✋',
+    doubleDown:'Double ↕',
+    rotateTitle:'Xoay màn hình ngang',
+    rotateDesc:'Game này chơi tốt nhất ở màn hình ngang. Hãy xoay điện thoại!',
+    dealing:'Đang chia bài...', yourTurn:'🎮 Lượt của bạn — chọn bài để đánh',
+    botTurn:'⏳ Lượt của', gameOver:'🏁 Ván kết thúc!',
+    emptyTable:'Bàn trống — lượt mới', newGame:'Bắt đầu ván mới',
+    playedBy:'đánh:', cardCount:'lá', outNotif:'đã hết bài!',
+    selectCards:'Chọn bài để đánh!', badCombo:'Bộ bài không hợp lệ!',
+    notStrong:'Bài không đủ mạnh!', must3S:'Lượt đầu phải đánh 3♠!',
+    noChips:'Không đủ chips!', betFirst:'Đặt cược trước!',
+    rank1t:'🥇 Bạn thắng!', rank2t:'🥈 Hạng 2 — Á Quân!',
+    rank3t:'🥉 Hạng 3 — Gần rồi!', rank4t:'😭 Hạng Bèo!',
+    rkL1:'🥇 Hạng 1', rkL2:'🥈 Hạng 2', rkL3:'🥉 Hạng 3', rkL4:'💀 Hạng 4',
+    youM:'← Bạn', done:'Hoàn thành!',
+    xdBothBJ:'🤝 Cả hai Xì Dách — Hòa!', xdYouBJ:'🌟 Xì Dách! Bạn thắng!',
+    xdDealerBJ:'😮 Dealer Xì Dách! Bạn thua!', xdXiBan:'🃏 Xì Bàn! Bộ đôi Át!',
+    xdNguLinh:'🎉 Ngũ Linh! Bạn thắng!', xdBust:'💥 Quắc! Bạn thua!',
+    xdDlBust:'💥 Dealer quắc! Bạn thắng!',
+    xdWin:'Bạn thắng!', xdLose:'Bạn thua!', xdDraw:'Hòa!',
+    chipsLeft:'Chips còn:', outOfChips:'Hết chips! Nhận 500.',
+    xdDouble:'Double Down!',
+    score:'Điểm:', bjLabel:'🌟 Xì Dách!', xiBanLabel:'🃏 Xì Bàn!',
+    ngLinh:'🎉 Ngũ Linh!', bust:'💥 Quắc!',
+    playAgain:'Chơi lại', home:'🏠 Menu',
+    botNames:['Bot 1','Bot 2','Bot 3'],
+    playerNames:['Bạn','Bot 1','Bot 2','Bot 3'],
+    cnames:{ single:'Rác', pair:'Đôi', triple:'Sám', four:'Tứ quý', straight:'Sảnh', conspair:'Đôi thông' }
+  },
+  en: {
+    menuTitle:'Card Games', menuSub:'Tien Len · Blackjack',
+    tlName:'Tien Len (Southern)', tlDesc:'52 cards · 4 players · Empty hand to win',
+    xdName:'Blackjack', xdDesc:'Player vs Dealer · Do not go over 21',
+    menuFooter:'© 2026 Card Games · Offline',
+    continueHint:'Tien Len game in progress:',
+    continueGame:'▶ Continue', deleteSave:'✕ Delete',
+    sort:'⇅ Sort', you:'👤 You', cards:' cards',
+    playBtn:'Play ▶', passBtn:'Pass ✖',
+    dealer:'🤖 Dealer', chipsLabel:'💰 Chips:', betLabel:'Bet:',
+    clear:'Clear', deal:'Deal 🃏', hit:'Hit ➕', stand:'Stand ✋',
+    doubleDown:'Double ↕',
+    rotateTitle:'Rotate Your Phone',
+    rotateDesc:'This game plays best in landscape mode. Please rotate your device!',
+    dealing:'Dealing cards...', yourTurn:'🎮 Your turn — select cards to play',
+    botTurn:'⏳ Turn of', gameOver:'🏁 Game over!',
+    emptyTable:'Table cleared — new round', newGame:'New game started',
+    playedBy:'played:', cardCount:'cards', outNotif:'is out!',
+    selectCards:'Select cards to play!', badCombo:'Invalid combination!',
+    notStrong:'Not strong enough!', must3S:'First turn must include 3♠!',
+    noChips:'Not enough chips!', betFirst:'Place a bet first!',
+    rank1t:'🥇 You Win!', rank2t:'🥈 2nd Place!',
+    rank3t:'🥉 3rd Place!', rank4t:'😭 Last Place!',
+    rkL1:'🥇 1st', rkL2:'🥈 2nd', rkL3:'🥉 3rd', rkL4:'💀 Last',
+    youM:'← You', done:'Done!',
+    xdBothBJ:'🤝 Both Blackjack — Draw!', xdYouBJ:'🌟 Blackjack! You win!',
+    xdDealerBJ:'😮 Dealer Blackjack! You lose!', xdXiBan:'🃏 Double Ace!',
+    xdNguLinh:'🎉 Five Card Charlie! You win!', xdBust:'💥 Bust! You lose!',
+    xdDlBust:'💥 Dealer busts! You win!',
+    xdWin:'You win!', xdLose:'You lose!', xdDraw:'Draw!',
+    chipsLeft:'Chips remaining:', outOfChips:'Out of chips! Got 500.',
+    xdDouble:'Double Down!',
+    score:'Score:', bjLabel:'🌟 Blackjack!', xiBanLabel:'🃏 Double Ace!',
+    ngLinh:'🎉 Five Card Charlie!', bust:'💥 Bust!',
+    playAgain:'Play Again', home:'🏠 Menu',
+    botNames:['Bot 1','Bot 2','Bot 3'],
+    playerNames:['You','Bot 1','Bot 2','Bot 3'],
+    cnames:{ single:'Single', pair:'Pair', triple:'Triple', four:'Four of a Kind', straight:'Straight', conspair:'Con. Pairs' }
+  }
+};
+
+function t(key) {
+  var s = STRINGS[LANG];
+  return (s && s[key] !== undefined) ? s[key] : (STRINGS.vi[key] !== undefined ? STRINGS.vi[key] : key);
+}
+
+function applyLang() {
+  document.querySelectorAll('[data-i18n]').forEach(function (el) {
+    el.textContent = t(el.dataset.i18n);
+  });
+  var nxt = LANG === 'vi' ? 'EN' : 'VI';
+  ['menu-lang-btn','tl-lang-btn','xd-lang-btn'].forEach(function (id) {
+    var el = document.getElementById(id);
+    if (el) el.textContent = nxt;
+  });
+  var sc = document.querySelector('.screen.active');
+  if (sc) {
+    if (sc.id === 'tienlen' && TL.hands[0].length > 0) tlRender();
+    if (sc.id === 'xidach') xdRender();
+  }
+}
+
+function toggleLang() {
+  LANG = LANG === 'vi' ? 'en' : 'vi';
+  try { localStorage.setItem('lang', LANG); } catch (e) {}
+  applyLang();
+}
+
+/* ============================================================
+   SOUND SYSTEM — Web Audio API, no external files
+   ============================================================ */
+var SFX = (function () {
+  var ctx = null, _muted = false;
+
+  function getCtx() {
+    if (!ctx) {
+      try { ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) {}
+    }
+    return ctx;
+  }
+
+  /* Play a single synthesized tone */
+  function tone(freq, dur, type, vol, when) {
+    var c = getCtx();
+    if (!c || _muted) return;
+    if (c.state === 'suspended') c.resume();
+    var t0 = when || c.currentTime;
+    var osc  = c.createOscillator();
+    var gain = c.createGain();
+    osc.connect(gain);
+    gain.connect(c.destination);
+    osc.type = type || 'sine';
+    osc.frequency.setValueAtTime(freq, t0);
+    gain.gain.setValueAtTime(Math.min(vol || 0.25, 1), t0);
+    gain.gain.exponentialRampToValueAtTime(0.001, t0 + dur);
+    osc.start(t0);
+    osc.stop(t0 + dur + 0.02);
+  }
+
+  var sounds = {
+    click:  function (c) { tone(800, 0.04, 'square',   0.12, c.currentTime); },
+    select: function (c) { tone(560, 0.07, 'triangle', 0.14, c.currentTime); },
+    play: function (c) {
+      /* crisp two-tone card slap */
+      tone(620, 0.06, 'triangle', 0.3,  c.currentTime);
+      tone(420, 0.10, 'triangle', 0.18, c.currentTime + 0.05);
+    },
+    pass: function (c) {
+      tone(320, 0.12, 'sine', 0.2, c.currentTime);
+      tone(260, 0.14, 'sine', 0.12, c.currentTime + 0.09);
+    },
+    deal: function (c) {
+      var now = c.currentTime;
+      for (var i = 0; i < 5; i++) {
+        tone(480 + i * 40, 0.05, 'triangle', 0.12, now + i * 0.055);
+      }
+    },
+    win: function (c) {
+      var now = c.currentTime;
+      [523, 659, 784, 1047, 1318].forEach(function (f, i) {
+        tone(f, 0.35, 'sine', 0.28, now + i * 0.11);
+      });
+    },
+    lose: function (c) {
+      var now = c.currentTime;
+      [400, 350, 300, 240, 200].forEach(function (f, i) {
+        tone(f, 0.28, 'sawtooth', 0.14, now + i * 0.12);
+      });
+    },
+    bj: function (c) {
+      var now = c.currentTime;
+      [523, 784, 1047, 1175, 1568].forEach(function (f, i) {
+        tone(f, 0.42, 'sine', 0.3, now + i * 0.09);
+      });
+    }
+  };
+
+  return {
+    play: function (name) {
+      var c = getCtx();
+      if (!c || _muted) return;
+      if (c.state === 'suspended') { c.resume(); }
+      if (sounds[name]) sounds[name](c);
+    },
+    toggle: function () {
+      _muted = !_muted;
+      document.querySelectorAll('.sfx-btn').forEach(function (el) {
+        el.textContent = _muted ? '🔇' : '🔊';
+      });
+    },
+    isMuted: function () { return _muted; }
+  };
+})();
+
+/* ============================================================
+   CARD ENGINE
+   ============================================================ */
+var TL_RANKS  = ['3','4','5','6','7','8','9','10','J','Q','K','A','2'];
+var SUITS_SYM = ['♠','♣','♦','♥'];
+var IS_RED    = [false, false, true, true];
+
+function TCard(rank, suit) { this.rank = rank; this.suit = suit; }
+Object.defineProperties(TCard.prototype, {
+  val: { get: function () { return this.rank * 4 + this.suit; } },
+  rn:  { get: function () { return TL_RANKS[this.rank]; } },
+  ss:  { get: function () { return SUITS_SYM[this.suit]; } },
+  red: { get: function () { return IS_RED[this.suit]; } }
+});
+
+function makeDeck() {
+  var d = [];
+  for (var s = 0; s < 4; s++) for (var r = 0; r < 13; r++) d.push(new TCard(r, s));
+  return d;
+}
+
+function shuffle(arr) {
+  var a = arr.slice(), i, j, tmp;
+  for (i = a.length - 1; i > 0; i--) {
+    j = Math.floor(Math.random() * (i + 1));
+    tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+  }
+  return a;
+}
+
+/* ===== CARD RENDER ===== */
+function elCard(card, opts) {
+  opts = opts || {};
+  var el = document.createElement('div');
+  var cls = 'card';
+  if (!opts.back && card.red) cls += ' red';
+  if (opts.back) cls += ' back';
+  if (opts.sm)   cls += ' sm';
+  if (opts.selected) cls += ' selected';
+  if (opts.playable && !opts.selected) cls += ' playable';
+  if (opts.anim)     cls += ' card-anim-in';
+  el.className = cls;
+  if (!opts.back) {
+    el.innerHTML =
+      '<div class="card-top"><div class="card-rank">' + card.rn +
+      '</div><div class="card-suit-sm">' + card.ss + '</div></div>' +
+      '<div class="card-center">' + card.ss + '</div>' +
+      '<div class="card-bot"><div class="card-rank">' + card.rn +
+      '</div><div class="card-suit-sm">' + card.ss + '</div></div>';
+  }
+  return el;
+}
+
+/* ============================================================
+   TIẾN LÊN — COMBO LOGIC
+   ============================================================ */
+function cmpCard(a, b) { return a.val - b.val; }
+function sortC(arr) { return arr.slice().sort(cmpCard); }
+
+function detectCombo(sel) {
+  var cards = sortC(sel), n = cards.length;
+  if (!n) return null;
+  if (n === 1) return { type:'single', cards:cards, rank:cards[0].rank, suit:cards[0].suit };
+
+  var allSame = true;
+  for (var ki = 0; ki < n; ki++) if (cards[ki].rank !== cards[0].rank) { allSame = false; break; }
+  if (allSame) {
+    if (n === 2) return { type:'pair',   cards:cards, rank:cards[0].rank, ts:cards[1].suit };
+    if (n === 3) return { type:'triple', cards:cards, rank:cards[0].rank };
+    if (n === 4) return { type:'four',   cards:cards, rank:cards[0].rank };
+    return null;
+  }
+  /* No 2s in sequences */
+  for (var k2 = 0; k2 < n; k2++) if (cards[k2].rank === 12) return null;
+
+  /* Consecutive pairs */
+  if (n >= 4 && n % 2 === 0) {
+    var cpOk = true, cpRanks = [], ci;
+    for (ci = 0; ci < n; ci += 2) {
+      if (cards[ci].rank !== cards[ci+1].rank) { cpOk = false; break; }
+      cpRanks.push(cards[ci].rank);
+    }
+    if (cpOk) {
+      var seqOk = true;
+      for (ci = 1; ci < cpRanks.length; ci++) if (cpRanks[ci] !== cpRanks[ci-1]+1) { seqOk = false; break; }
+      if (seqOk) return { type:'conspair', cards:cards, len:n/2, topRank:cards[n-1].rank, ts:cards[n-1].suit };
+    }
+  }
+  /* Straight */
+  if (n >= 3) {
+    var stOk = true;
+    for (var si = 1; si < n; si++) if (cards[si].rank !== cards[si-1].rank+1) { stOk = false; break; }
+    if (stOk) return { type:'straight', cards:cards, len:n, topRank:cards[n-1].rank, ts:cards[n-1].suit };
+  }
+  return null;
+}
+
+function canBeat(a, b) {
+  if (!b) return true;
+  if (a.type === 'four') {
+    if (b.type === 'four')     return a.rank > b.rank;
+    if (b.type === 'single'   && b.rank === 12) return true;
+    if (b.type === 'conspair' && b.len  <= 3)   return true;
+    return false;
+  }
+  if (a.type === 'conspair') {
+    if (b.type === 'conspair') {
+      if (a.len !== b.len) return a.len > b.len;
+      return a.topRank > b.topRank || (a.topRank === b.topRank && a.ts > b.ts);
+    }
+    if (b.type === 'single' && b.rank === 12) return a.len >= 3;
+    if (b.type === 'pair'   && b.rank === 12) return a.len >= 4;
+    return false;
+  }
+  if (a.type !== b.type) return false;
+  if (a.type === 'single')   return a.rank > b.rank || (a.rank === b.rank && a.suit > b.suit);
+  if (a.type === 'pair')     return a.rank > b.rank || (a.rank === b.rank && a.ts   > b.ts);
+  if (a.type === 'triple')   return a.rank > b.rank;
+  if (a.type === 'straight') return a.len === b.len && (a.topRank > b.topRank || (a.topRank === b.topRank && a.ts > b.ts));
+  return false;
+}
+
+/*
+  validPlays — optimised: structured enumeration by rank groups + consecutive runs.
+  No brute-force combination search; still enumerates ALL valid plays for highlighting.
+*/
+function validPlays(hand, against) {
+  var results = [];
+
+  /* Group hand by rank */
+  var byRank = {};
+  hand.forEach(function (c) {
+    if (!byRank[c.rank]) byRank[c.rank] = [];
+    byRank[c.rank].push(c);
+  });
+
+  /* Sort each group by suit (ascending) for deterministic output */
+  Object.keys(byRank).forEach(function (r) { byRank[r].sort(cmpCard); });
+
+  /* --- SINGLES --- */
+  hand.forEach(function (c) {
+    var combo = { type:'single', cards:[c], rank:c.rank, suit:c.suit };
+    if (canBeat(combo, against)) results.push(combo);
+  });
+
+  /* --- SAME-RANK GROUPS: pairs / triples / fours --- */
+  Object.keys(byRank).forEach(function (rStr) {
+    var r = parseInt(rStr, 10);
+    var grp = byRank[r]; /* sorted by suit */
+
+    /* All unique pairs from this group */
+    if (grp.length >= 2) {
+      for (var ai = 0; ai < grp.length - 1; ai++) {
+        for (var bi = ai + 1; bi < grp.length; bi++) {
+          var pCards = [grp[ai], grp[bi]]; /* already sorted */
+          var pc = { type:'pair', cards:pCards, rank:r, ts:pCards[1].suit };
+          if (canBeat(pc, against)) results.push(pc);
+        }
+      }
+    }
+    if (grp.length >= 3) {
+      var tc = { type:'triple', cards:grp.slice(0,3), rank:r };
+      if (canBeat(tc, against)) results.push(tc);
+    }
+    if (grp.length >= 4) {
+      var fc = { type:'four', cards:grp.slice(), rank:r };
+      if (canBeat(fc, against)) results.push(fc);
+    }
+  });
+
+  /* Sorted non-2 ranks present in hand */
+  var nRanks = Object.keys(byRank).map(Number).filter(function (r) { return r !== 12; }).sort(function (a, b) { return a - b; });
+
+  /* --- STRAIGHTS ---
+     For each start position, extend the consecutive run as long as possible.
+     For each valid run of length >= 3, try all suit options for the TOP card. */
+  for (var sti = 0; sti < nRanks.length; sti++) {
+    /* Cards representing each rank in the current run (take [0] for non-top) */
+    var runParts = [byRank[nRanks[sti]][0]];
+
+    for (var eni = sti + 1; eni < nRanks.length; eni++) {
+      if (nRanks[eni] !== nRanks[eni - 1] + 1) break; /* gap — stop extending */
+      runParts.push(byRank[nRanks[eni]][0]);           /* placeholder for this rank */
+
+      if (runParts.length >= 3) {
+        var topRnk = nRanks[eni];
+        /* Try each card of the top rank as the actual top (different suits) */
+        byRank[topRnk].forEach(function (topCard) {
+          var stCards = sortC(runParts.slice(0, runParts.length - 1).concat([topCard]));
+          var sc = { type:'straight', cards:stCards, len:stCards.length, topRank:topRnk, ts:topCard.suit };
+          if (canBeat(sc, against)) results.push(sc);
+        });
+      }
+    }
+  }
+
+  /* --- CONSECUTIVE PAIRS ---
+     Only ranks that have >= 2 cards, no 2s. */
+  var pRanks = nRanks.filter(function (r) { return byRank[r].length >= 2; });
+
+  for (var psi = 0; psi < pRanks.length; psi++) {
+    /* Accumulate pairs rank by rank */
+    var cpBase = byRank[pRanks[psi]].slice(0, 2); /* first pair of this rank */
+
+    for (var pei = psi + 1; pei < pRanks.length; pei++) {
+      if (pRanks[pei] !== pRanks[pei - 1] + 1) break;
+      var topPR    = pRanks[pei];
+      var topPGrp  = byRank[topPR]; /* >= 2 cards */
+      var numPairs = pei - psi + 1;
+
+      /* For top pair, try all suit combinations (affects ts comparison key) */
+      for (var tpi = 0; tpi < topPGrp.length - 1; tpi++) {
+        for (var tpj = tpi + 1; tpj < topPGrp.length; tpj++) {
+          var topPair = [topPGrp[tpi], topPGrp[tpj]]; /* sorted by suit already */
+          var cpCards = sortC(cpBase.concat(topPair));
+          var cpc = { type:'conspair', cards:cpCards, len:numPairs, topRank:topPR, ts:cpCards[cpCards.length-1].suit };
+          if (canBeat(cpc, against)) results.push(cpc);
+        }
+      }
+
+      /* Extend base for next iteration: add this rank's first pair */
+      cpBase = cpBase.concat(byRank[topPR].slice(0, 2));
+    }
+  }
+
+  return results;
+}
+
+/* Cache valid plays for current player turn — cleared on every state change */
+var _vpCache = null;
+function getPlayerValidPlays() {
+  if (!_vpCache) _vpCache = validPlays(TL.hands[0], TL.lastCombo);
+  return _vpCache;
+}
+function clearVPCache() { _vpCache = null; }
+
+/* ============================================================
+   TIẾN LÊN — STATE
+   ============================================================ */
+var TL = {
+  hands: [[],[],[],[]], currentTurn:0,
+  lastCombo:null, lastBy:-1, passCount:0,
+  selected:[], finished:[], gameOver:false
+};
+var MEDALS = ['🥇','🥈','🥉','💀'];
+
+/* ============================================================
+   TIẾN LÊN — SAVE / LOAD / CONTINUE
+   ============================================================ */
+function tlSave() {
+  if (TL.gameOver) { tlClearSave(); return; }
+  var state = {
+    hands: TL.hands.map(function (h) {
+      return h.map(function (c) { return { r: c.rank, s: c.suit }; });
+    }),
+    currentTurn: TL.currentTurn,
+    lastBy:      TL.lastBy,
+    passCount:   TL.passCount,
+    finished:    TL.finished.slice(),
+    lastCombo: TL.lastCombo ? {
+      type:    TL.lastCombo.type,
+      cards:   TL.lastCombo.cards.map(function (c) { return { r:c.rank, s:c.suit }; }),
+      rank:    TL.lastCombo.rank,
+      suit:    TL.lastCombo.suit,
+      ts:      TL.lastCombo.ts,
+      len:     TL.lastCombo.len,
+      topRank: TL.lastCombo.topRank
+    } : null
+  };
+  try { localStorage.setItem('tl_save', JSON.stringify(state)); } catch (e) {}
+}
+
+function tlLoad() {
+  try {
+    var raw = localStorage.getItem('tl_save');
+    if (!raw) return false;
+    var st = JSON.parse(raw);
+    TL.hands       = st.hands.map(function (h) { return h.map(function (c) { return new TCard(c.r, c.s); }); });
+    TL.currentTurn = st.currentTurn;
+    TL.lastBy      = st.lastBy;
+    TL.passCount   = st.passCount;
+    TL.finished    = st.finished || [];
+    TL.selected    = [];
+    TL.gameOver    = false;
+    if (st.lastCombo) {
+      var lc = st.lastCombo;
+      TL.lastCombo = {
+        type:    lc.type,
+        cards:   lc.cards.map(function (c) { return new TCard(c.r, c.s); }),
+        rank:    lc.rank, suit: lc.suit, ts: lc.ts,
+        len:     lc.len,  topRank: lc.topRank
+      };
+    } else {
+      TL.lastCombo = null;
+    }
+    return true;
+  } catch (e) { return false; }
+}
+
+function tlClearSave() {
+  try { localStorage.removeItem('tl_save'); } catch (e) {}
+  checkContinue();
+}
+
+function tlContinue() {
+  SFX.play('deal');
+  if (tlLoad()) {
+    showScreen('tienlen');
+    clearVPCache();
+    tlRender();
+    if (isBotTurn()) setTimeout(tlBotTurn, 900);
+  } else {
+    tlClearSave();
+    startTienLen();
+  }
+}
+
+function tlDeleteSave() {
+  tlClearSave();
+  notify(LANG === 'vi' ? 'Đã xóa ván cũ' : 'Save deleted');
+}
+
+function checkContinue() {
+  var has = false;
+  try { has = !!localStorage.getItem('tl_save'); } catch (e) {}
+  var bar = document.getElementById('tl-continue-bar');
+  if (bar) bar.style.display = has ? 'flex' : 'none';
+}
+
+/* ============================================================
+   TIẾN LÊN — INIT
+   ============================================================ */
+function tlInit() {
+  var deck = shuffle(makeDeck()), i;
+  TL.hands = [[],[],[],[]];
+  TL.finished = []; TL.selected = [];
+  TL.lastCombo = null; TL.lastBy = -1;
+  TL.passCount = 0;   TL.gameOver = false;
+
+  for (i = 0; i < 52; i++) TL.hands[i % 4].push(deck[i]);
+  TL.hands.forEach(function (h) { h.sort(cmpCard); });
+
+  /* Find player with 3♠ (rank 0, suit 0) */
+  TL.currentTurn = 0;
+  outer: for (var p = 0; p < 4; p++) {
+    for (i = 0; i < TL.hands[p].length; i++) {
+      if (TL.hands[p][i].rank === 0 && TL.hands[p][i].suit === 0) {
+        TL.currentTurn = p; break outer;
+      }
+    }
+  }
+
+  clearVPCache();
+  tlClearSave();
+  SFX.play('deal');
+  tlRender();
+  var lbl = document.getElementById('tl-turn-label');
+  if (lbl) lbl.textContent = t('dealing');
+  if (TL.currentTurn !== 0) setTimeout(tlBotTurn, 1000);
+}
+
+/* ============================================================
+   TIẾN LÊN — RENDER
+   ============================================================ */
+function tlRender() { tlRenderBots(); tlRenderPlayed(); tlRenderHand(); tlUpdateButtons(); }
+
+function tlRenderBots() {
+  var row = document.getElementById('tl-bots-row');
+  row.innerHTML = '';
+  for (var i = 1; i <= 3; i++) {
+    var isDone   = TL.finished.indexOf(i) !== -1;
+    var isActive = TL.currentTurn === i && !isDone;
+    var slot = document.createElement('div');
+    slot.className = 'bot-slot' + (isActive ? ' active-turn' : '') + (isDone ? ' finished' : '');
+    if (isDone) {
+      var badge = document.createElement('div');
+      badge.className = 'finish-badge';
+      badge.textContent = MEDALS[TL.finished.indexOf(i)];
+      slot.appendChild(badge);
+    }
+    var nameEl = document.createElement('div');
+    nameEl.className = 'bot-name';
+    nameEl.textContent = t('botNames')[i - 1] + ' · ' + TL.hands[i].length + ' ' + t('cardCount');
+    slot.appendChild(nameEl);
+    var wrap = document.createElement('div');
+    wrap.className = 'bot-cards-wrap';
+    (function (hand, done) {
+      hand.forEach(function (card) { wrap.appendChild(elCard(card, { back: !done, sm: true })); });
+    })(TL.hands[i], isDone);
+    slot.appendChild(wrap);
+    row.appendChild(slot);
+  }
+}
+
+/* Track whether the last play was NEW (to animate cards) */
+var _tlAnimPlayed = false;
+
+function tlRenderPlayed() {
+  var label = document.getElementById('tl-turn-label');
+  var row   = document.getElementById('tl-played-row');
+  var hint  = document.getElementById('tl-hint');
+  row.innerHTML = '';
+
+  if (TL.lastCombo) {
+    var anim = _tlAnimPlayed;
+    TL.lastCombo.cards.forEach(function (c) {
+      row.appendChild(elCard(c, { anim: anim }));
+    });
+    _tlAnimPlayed = false; /* consume flag */
+    var cn = t('cnames');
+    hint.textContent = t('playerNames')[TL.lastBy] + ' ' + t('playedBy') + ' ' + (cn[TL.lastCombo.type] || '');
+  } else {
+    hint.textContent = TL.passCount > 0 ? t('emptyTable') : t('newGame');
+  }
+
+  if (TL.gameOver) {
+    label.textContent = t('gameOver');
+  } else if (TL.finished.indexOf(TL.currentTurn) !== -1) {
+    label.textContent = '';
+  } else {
+    label.textContent = TL.currentTurn === 0
+      ? t('yourTurn')
+      : t('botTurn') + ' ' + t('playerNames')[TL.currentTurn] + '...';
+  }
+}
+
+function tlRenderHand() {
+  var handEl   = document.getElementById('tl-hand');
+  handEl.innerHTML = '';
+  var myActive = TL.currentTurn === 0 && TL.finished.indexOf(0) === -1 && !TL.gameOver;
+
+  /* Use cached valid plays */
+  var playableSet = [];
+  if (myActive) {
+    getPlayerValidPlays().forEach(function (combo) {
+      combo.cards.forEach(function (card) {
+        if (playableSet.indexOf(card) === -1) playableSet.push(card);
+      });
+    });
+  }
+
+  TL.hands[0].forEach(function (card) {
+    var isSel = TL.selected.indexOf(card) !== -1;
+    var isPl  = playableSet.indexOf(card) !== -1;
+    var el    = elCard(card, { selected: isSel, playable: isPl });
+    if (myActive) {
+      (function (c) { el.addEventListener('click', function () { tlToggleCard(c); }); })(card);
+    }
+    handEl.appendChild(el);
+  });
+
+  document.getElementById('tl-card-count').textContent = TL.hands[0].length;
+  var idx0 = TL.finished.indexOf(0);
+  document.getElementById('tl-player-info').textContent = idx0 !== -1 ? MEDALS[idx0] + ' ' + t('done') : '';
+}
+
+function tlUpdateButtons() {
+  var myTurn = TL.currentTurn === 0 && TL.finished.indexOf(0) === -1 && !TL.gameOver;
+  document.getElementById('tl-play-btn').disabled = !myTurn || TL.selected.length === 0;
+  document.getElementById('tl-pass-btn').disabled = !myTurn || !TL.lastCombo;
+}
+
+/* ============================================================
+   TIẾN LÊN — PLAYER ACTIONS
+   ============================================================ */
+function tlToggleCard(card) {
+  SFX.play('select');
+  var idx = TL.selected.indexOf(card);
+  if (idx === -1) TL.selected.push(card); else TL.selected.splice(idx, 1);
+  tlRenderHand(); tlUpdateButtons();
+}
+
+function tlSortHand() {
+  SFX.play('click');
+  TL.hands[0].sort(cmpCard); TL.selected = [];
+  tlRenderHand(); tlUpdateButtons();
+}
+
+function tlPlay() {
+  if (TL.currentTurn !== 0) return;
+  if (!TL.selected.length) { notify(t('selectCards')); return; }
+  var combo = detectCombo(TL.selected);
+  if (!combo) { notify(t('badCombo')); return; }
+  if (!canBeat(combo, TL.lastCombo)) { notify(t('notStrong')); return; }
+  /* First-play 3♠ rule */
+  if (!TL.lastCombo && TL.lastBy === -1) {
+    var h3s = false, s3s = false, hi;
+    for (hi = 0; hi < TL.hands[0].length; hi++)  if (TL.hands[0][hi].rank===0 && TL.hands[0][hi].suit===0) { h3s=true; break; }
+    for (hi = 0; hi < TL.selected.length; hi++) if (TL.selected[hi].rank===0  && TL.selected[hi].suit===0) { s3s=true; break; }
+    if (h3s && !s3s) { notify(t('must3S')); return; }
+  }
+  SFX.play('play');
+  tlDoPlay(0, combo);
+}
+
+function tlPass() {
+  if (TL.currentTurn !== 0 || !TL.lastCombo) return;
+  SFX.play('pass');
+  tlDoPass(0);
+}
+
+/* ============================================================
+   TIẾN LÊN — CORE TURN ENGINE
+   ============================================================ */
+function tlNextActive(from) {
+  var next = (from + 1) % 4;
+  for (var step = 0; step < 4; step++) { /* 'step' not 't' — never shadow t() */
+    if (TL.finished.indexOf(next) === -1) return next;
+    next = (next + 1) % 4;
+  }
+  return from; /* fallback: all finished */
+}
+
+function isBotTurn() {
+  return !TL.gameOver &&
+    TL.finished.indexOf(TL.currentTurn) === -1 &&
+    (TL.currentTurn !== 0 || TL.finished.indexOf(0) !== -1);
+}
+
+function tlDoPlay(pid, combo) {
+  /* Remove played cards from hand */
+  combo.cards.forEach(function (card) {
+    var idx = TL.hands[pid].indexOf(card);
+    if (idx !== -1) TL.hands[pid].splice(idx, 1);
+  });
+  TL.lastCombo = combo; TL.lastBy = pid; TL.passCount = 0; TL.selected = [];
+  clearVPCache();
+
+  /* Animate the newly played cards */
+  _tlAnimPlayed = true;
+
+  /* Check if this player emptied their hand */
+  if (TL.hands[pid].length === 0 && TL.finished.indexOf(pid) === -1) {
+    TL.finished.push(pid);
+    notify(t('playerNames')[pid] + ' ' + t('outNotif') + ' ' + MEDALS[TL.finished.length - 1]);
+    var active = [0,1,2,3].filter(function (p) { return TL.finished.indexOf(p) === -1; });
+    if (active.length <= 1) {
+      if (active.length === 1) TL.finished.push(active[0]);
+      TL.gameOver = true;
+      tlClearSave();
+      tlRender();
+      if (pid === 0 || (TL.finished.length > 0 && TL.finished[0] === 0)) SFX.play('win');
+      else SFX.play('lose');
+      setTimeout(tlShowResult, 800);
+      return;
+    }
+  }
+
+  tlSave(); /* persist mid-game state */
+  tlNextTurn();
+}
+
+function tlNextTurn() {
+  TL.currentTurn = tlNextActive(TL.currentTurn);
+  tlRender();
+  if (isBotTurn()) setTimeout(tlBotTurn, 900);
+}
+
+function tlDoPass(pid) {
+  TL.passCount++;
+  clearVPCache();
+  var active    = [0,1,2,3].filter(function (p) { return TL.finished.indexOf(p) === -1; });
+  var lastByOut = TL.finished.indexOf(TL.lastBy) !== -1;
+
+  /* Threshold: if round-winner already finished, ALL remaining must pass;
+     otherwise only the OTHER active players need to pass. */
+  var threshold = lastByOut ? active.length : active.length - 1;
+
+  if (TL.passCount >= threshold) {
+    /* New round */
+    TL.passCount = 0; TL.lastCombo = null;
+    TL.currentTurn = lastByOut ? tlNextActive(TL.lastBy) : TL.lastBy;
+    tlSave();
+    tlRender();
+    if (isBotTurn()) setTimeout(tlBotTurn, 800);
+  } else {
+    TL.currentTurn = tlNextActive(pid);
+    tlSave();
+    tlRender();
+    if (isBotTurn()) setTimeout(tlBotTurn, 800);
+  }
+}
+
+/* ============================================================
+   TIẾN LÊN — SMART BOT AI
+   ============================================================ */
+
+/*
+  Hand analysis: mark which cards are part of valuable combos
+  so the bot avoids breaking them unnecessarily.
+*/
+function analyzeHand(hand) {
+  var valuable = {}; /* key = rank+'_'+suit */
+
+  var byRank = {};
+  hand.forEach(function (c) {
+    if (!byRank[c.rank]) byRank[c.rank] = [];
+    byRank[c.rank].push(c);
+  });
+
+  /* Cards in pairs / triples / fours are valuable */
+  Object.keys(byRank).forEach(function (r) {
+    if (byRank[r].length >= 2) {
+      byRank[r].forEach(function (c) { valuable[c.rank + '_' + c.suit] = true; });
+    }
+  });
+
+  /* Cards that are part of a straight potential (3+ consecutive ranks) */
+  var nRanks = Object.keys(byRank).map(Number).filter(function (r) { return r !== 12; }).sort(function (a,b) { return a-b; });
+  for (var si = 0; si < nRanks.length - 2; si++) {
+    if (nRanks[si+1] === nRanks[si]+1 && nRanks[si+2] === nRanks[si]+2) {
+      [nRanks[si], nRanks[si+1], nRanks[si+2]].forEach(function (r) {
+        byRank[r].forEach(function (c) { valuable[c.rank + '_' + c.suit] = true; });
+      });
+    }
+  }
+
+  return { valuable: valuable };
+}
+
+/*
+  Score a combo: LOWER score = prefer to play NOW.
+  Higher score = save these cards for later.
+*/
+function botComboScore(combo, hand, analysis) {
+  var score = 0;
+
+  combo.cards.forEach(function (c) {
+    /* Give extra weight to 2s (rank 12) and Aces (rank 11) */
+    var cv = c.rank <= 10 ? c.rank : (c.rank === 11 ? 20 : 35);
+    score += cv;
+  });
+
+  /* Penalty for breaking a valuable cluster */
+  var breaksValuable = combo.cards.some(function (c) {
+    return analysis.valuable[c.rank + '_' + c.suit];
+  });
+  if (breaksValuable) score += 18;
+
+  /* Big bonus for clearing the hand entirely */
+  if (combo.cards.length === hand.length) score -= 500;
+  /* Decent bonus for leaving just 1 card */
+  if (combo.cards.length === hand.length - 1) score -= 60;
+
+  /* Bonus for combos that use ONLY non-valuable cards (junk dump) */
+  var allJunk = combo.cards.every(function (c) {
+    return !analysis.valuable[c.rank + '_' + c.suit];
+  });
+  if (allJunk) score -= 10;
+
+  return score;
+}
+
+/*
+  Select the best combo from candidates based on:
+  1. Type matching (prefer playing same type against table)
+  2. Saving premium cards (A/2)
+  3. Not wasting bombs on non-2 combos
+  4. Dumping junk / low-value cards first when leading
+*/
+function botSelectCombo(hand, combos, against) {
+  var analysis = analyzeHand(hand);
+
+  function bestOf(pool) {
+    pool.sort(function (a, b) { return botComboScore(a, hand, analysis) - botComboScore(b, hand, analysis); });
+    return pool[0];
+  }
+
+  /* Always take a hand-clearing combo immediately */
+  var clears = combos.filter(function (c) { return c.cards.length === hand.length; });
+  if (clears.length) return clears[0];
+
+  if (!against) {
+    /* === LEADING === */
+    /* Try to lead with isolated singles (cards with no combo potential) */
+    var isolated = combos.filter(function (c) {
+      return c.type === 'single' &&
+        !analysis.valuable[c.cards[0].rank + '_' + c.cards[0].suit] &&
+        c.cards[0].rank <= 10; /* not A or 2 */
+    });
+    if (isolated.length) return bestOf(isolated);
+
+    /* Try low pairs (not involving A/2) */
+    var lowPairs = combos.filter(function (c) {
+      return c.type === 'pair' && c.rank <= 9;
+    });
+    if (lowPairs.length) return bestOf(lowPairs);
+
+    /* Any safe single (not A/2) */
+    var safeSingles = combos.filter(function (c) {
+      return c.type === 'single' && c.rank <= 10;
+    });
+    if (safeSingles.length) return bestOf(safeSingles);
+
+    /* Fallback */
+    return bestOf(combos);
+
+  } else {
+    /* === FOLLOWING === */
+
+    /* Against a 2 (single): must use bomb if available */
+    if (against.type === 'single' && against.rank === 12) {
+      var bombs = combos.filter(function (c) { return c.type === 'four' || c.type === 'conspair'; });
+      if (bombs.length) {
+        /* Use smallest bomb (conspair before four, fewer pairs first) */
+        bombs.sort(function (a, b) {
+          var aLen = a.type === 'conspair' ? a.len : 100;
+          var bLen = b.type === 'conspair' ? b.len : 100;
+          return aLen - bLen;
+        });
+        return bombs[0];
+      }
+    }
+
+    /* Against a 2 pair: need 4+ conspair or four */
+    if (against.type === 'pair' && against.rank === 12) {
+      var bigBombs = combos.filter(function (c) {
+        return c.type === 'four' || (c.type === 'conspair' && c.len >= 4);
+      });
+      if (bigBombs.length) return bestOf(bigBombs);
+    }
+
+    /* Same-type match: strongly prefer this */
+    var sameType = combos.filter(function (c) { return c.type === against.type; });
+    if (sameType.length) {
+      /* Within same-type: avoid using premium (A/2) unless nothing else */
+      var nonPremium = sameType.filter(function (c) {
+        return c.cards.every(function (card) { return card.rank <= 10; });
+      });
+      return bestOf(nonPremium.length ? nonPremium : sameType);
+    }
+
+    /* No same-type: use any valid non-bomb if possible */
+    var noBombs = combos.filter(function (c) { return c.type !== 'four' && c.type !== 'conspair'; });
+    if (noBombs.length) return bestOf(noBombs);
+
+    /* Last resort: use a bomb */
+    return bestOf(combos);
+  }
+}
+
+function tlBotTurn() {
+  if (TL.finished.indexOf(TL.currentTurn) !== -1 || TL.gameOver) { tlNextTurn(); return; }
+  var pid    = TL.currentTurn;
+  var hand   = TL.hands[pid];
+  var combos = validPlays(hand, TL.lastCombo);
+
+  if (!combos.length) {
+    /* Table empty but no plays? Forced single (shouldn't happen normally) */
+    if (!TL.lastCombo) {
+      var forced = detectCombo([hand[0]]);
+      if (forced) { SFX.play('play'); tlDoPlay(pid, forced); return; }
+    }
+    SFX.play('pass');
+    tlDoPass(pid);
+    return;
+  }
+
+  var chosen = botSelectCombo(hand, combos, TL.lastCombo);
+  SFX.play('play');
+  tlDoPlay(pid, chosen);
+}
+
+/* ============================================================
+   TIẾN LÊN — RESULT
+   ============================================================ */
+function tlShowResult() {
+  var order  = TL.finished.slice();
+  var rkL    = [t('rkL1'), t('rkL2'), t('rkL3'), t('rkL4')];
+  var rkC    = ['#f1c40f','#bdc3c7','#cd6133','#e74c3c'];
+  var html   = '';
+  order.forEach(function (pid, i) {
+    var isYou = pid === 0;
+    html += '<div style="margin:7px 0;font-size:' + (isYou ? '1.18rem' : '0.95rem') +
+      ';font-weight:' + (isYou ? '800' : '400') +
+      ';color:' + (isYou ? rkC[i] : 'inherit') + '">' +
+      rkL[i] + ' &nbsp; ' + t('playerNames')[pid] +
+      (isYou ? ' ' + t('youM') : '') + '</div>';
+  });
+  var pRank  = order.indexOf(0) + 1;
+  var type   = pRank <= 3 ? 'win' : 'lose';
+  var titles = { 1:t('rank1t'), 2:t('rank2t'), 3:t('rank3t'), 4:t('rank4t') };
+  showResult(titles[pRank], html, type, tlInit);
+}
+
+/* ============================================================
+   XÌ DÁCH — STATE
+   ============================================================ */
+var XD_RANKS = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+
+var XD = { deck:[], player:[], dealer:[], chips:1000, bet:0, phase:'betting', hideDealer:true };
+
+/* Animation counters: how many cards from the END of each row should animate */
+var _xdAnim = { d: 0, p: 0 };
+
+function xdMakeDeck() {
+  var d = [];
+  for (var s = 0; s < 4; s++) for (var r = 0; r < 13; r++) d.push({ rank:r, suit:s });
+  return shuffle(d);
+}
+
+function xdScore(cards) {
+  var s = 0, aces = 0;
+  cards.forEach(function (c) {
+    if (c.rank === 0) { s += 11; aces++; }
+    else if (c.rank >= 9) s += 10;
+    else s += c.rank + 1;
+  });
+  while (s > 21 && aces > 0) { s -= 10; aces--; }
+  return s;
+}
+
+function xdBJ(c) { return c.length===2 && c.some(function(x){return x.rank===0;}) && c.some(function(x){return x.rank>=9;}); }
+function xdNL(c) { return c.length===5 && xdScore(c)<=21; }
+function xdXB(c) { return c.length===2 && c[0].rank===0 && c[1].rank===0; }
+
+/* ===== XD RENDER ===== */
+function xdRender() {
+  document.getElementById('xd-chips').textContent    = XD.chips;
+  document.getElementById('xd-bet-disp').textContent = XD.bet;
+
+  /* Dealer zone */
+  var dRow = document.getElementById('xd-dealer-cards');
+  dRow.innerHTML = '';
+  var dLen = XD.dealer.length;
+  XD.dealer.forEach(function (c, i) {
+    var el = xdElCard(c, i === 0 && XD.hideDealer);
+    if (_xdAnim.d > 0 && i >= dLen - _xdAnim.d) el.classList.add('card-anim-in');
+    dRow.appendChild(el);
+  });
+
+  var dSc = document.getElementById('xd-dealer-score');
+  if (!XD.dealer.length) { dSc.textContent = ''; }
+  else if (XD.hideDealer) { dSc.textContent = '? + ' + xdScore(XD.dealer.slice(1)); }
+  else {
+    var ds = xdScore(XD.dealer);
+    dSc.textContent = t('score') + ' ' + ds + (ds > 21 ? ' ' + t('bust') : '');
+  }
+
+  /* Player zone */
+  var pRow = document.getElementById('xd-player-cards');
+  pRow.innerHTML = '';
+  var pLen = XD.player.length;
+  XD.player.forEach(function (c, i) {
+    var el = xdElCard(c, false);
+    if (_xdAnim.p > 0 && i >= pLen - _xdAnim.p) el.classList.add('card-anim-in');
+    pRow.appendChild(el);
+  });
+
+  var pSc = document.getElementById('xd-player-score');
+  if (!XD.player.length) { pSc.textContent = ''; }
+  else {
+    var ps = xdScore(XD.player), extra = '';
+    if      (xdBJ(XD.player)) extra = ' ' + t('bjLabel');
+    else if (xdXB(XD.player)) extra = ' ' + t('xiBanLabel');
+    else if (xdNL(XD.player)) extra = ' ' + t('ngLinh');
+    else if (ps > 21)          extra = ' ' + t('bust');
+    pSc.textContent = t('score') + ' ' + ps + extra;
+  }
+
+  /* Show/hide button rows */
+  document.getElementById('xd-bet-row').style.display  = XD.phase === 'betting' ? 'flex' : 'none';
+  document.getElementById('xd-game-row').style.display = XD.phase === 'playing' ? 'flex' : 'none';
+
+  /* Stand button: disabled when player score < 16 (must keep hitting) */
+  var standBtn = document.querySelector('#xd-game-row .btn.danger');
+  if (standBtn) standBtn.disabled = XD.phase === 'playing' && xdScore(XD.player) < 16;
+
+  /* Reset animation counters after rendering */
+  _xdAnim = { d: 0, p: 0 };
+}
+
+function xdElCard(c, hidden) {
+  var el = document.createElement('div');
+  el.className = 'card' + (hidden ? ' back' : (c.suit >= 2 ? ' red' : ''));
+  if (!hidden) {
+    var rn = XD_RANKS[c.rank], ss = SUITS_SYM[c.suit];
+    el.innerHTML =
+      '<div class="card-top"><div class="card-rank">' + rn + '</div><div class="card-suit-sm">' + ss + '</div></div>' +
+      '<div class="card-center">' + ss + '</div>' +
+      '<div class="card-bot"><div class="card-rank">' + rn + '</div><div class="card-suit-sm">' + ss + '</div></div>';
+  }
+  return el;
+}
+
+/* ===== XD ACTIONS ===== */
+function startXiDach() {
+  showScreen('xidach');
+  try { XD.chips = parseInt(localStorage.getItem('xd_chips'), 10) || 1000; } catch (e) { XD.chips = 1000; }
+  if (XD.chips < 10) XD.chips = 1000;
+  XD.bet = 0; XD.phase = 'betting';
+  XD.player = []; XD.dealer = [];
+  XD.deck = xdMakeDeck();
+  _xdAnim = { d: 0, p: 0 };
+  xdRender();
+}
+
+function xdBet(amt) {
+  if (XD.phase !== 'betting') return;
+  if (XD.bet + amt > XD.chips) { notify(t('noChips')); return; }
+  SFX.play('click');
+  XD.bet += amt; xdRender();
+}
+
+function xdClearBet() {
+  if (XD.phase !== 'betting') return;
+  SFX.play('click');
+  XD.bet = 0; xdRender();
+}
+
+function xdDraw() {
+  if (XD.deck.length < 4) XD.deck = xdMakeDeck();
+  return XD.deck.pop();
+}
+
+function xdDeal() {
+  if (!XD.bet) { notify(t('betFirst')); return; }
+  SFX.play('deal');
+  XD.player  = [xdDraw(), xdDraw()];
+  XD.dealer  = [xdDraw(), xdDraw()];
+  XD.hideDealer = true; XD.phase = 'playing';
+  _xdAnim = { d: 2, p: 2 };
+  xdRender();
+
+  var pBJ = xdBJ(XD.player), dBJ = xdBJ(XD.dealer);
+  if (pBJ || dBJ) {
+    XD.hideDealer = false; _xdAnim = { d: 0, p: 0 }; xdRender();
+    setTimeout(function () {
+      if      (pBJ && dBJ) xdEnd('draw', t('xdBothBJ'));
+      else if (pBJ)        xdEnd('win',  t('xdYouBJ'));
+      else                 xdEnd('lose', t('xdDealerBJ'));
+    }, 600);
+    return;
+  }
+  if (xdXB(XD.player)) notify(t('xdXiBan'));
+}
+
+function xdHit() {
+  if (XD.phase !== 'playing') return;
+  SFX.play('play');
+  _xdAnim = { d: 0, p: 1 };
+  XD.player.push(xdDraw());
+  xdRender();
+  var s = xdScore(XD.player);
+  if (s > 21) { setTimeout(function () { xdEnd('lose', t('xdBust')); }, 400); return; }
+  if (xdNL(XD.player)) {
+    XD.hideDealer = false; _xdAnim = { d: 0, p: 0 }; xdRender();
+    setTimeout(function () { xdEnd('win', t('xdNguLinh')); }, 500);
+  }
+}
+
+function xdStand() {
+  if (XD.phase !== 'playing') return;
+  SFX.play('click');
+  XD.phase = 'dealer'; XD.hideDealer = false;
+  _xdAnim = { d: 0, p: 0 }; xdRender();
+  setTimeout(xdDealerDraw, 600);
+}
+
+function xdDealerDraw() {
+  if (xdScore(XD.dealer) < 17) {
+    SFX.play('play');
+    _xdAnim = { d: 1, p: 0 };
+    XD.dealer.push(xdDraw());
+    xdRender();
+    setTimeout(xdDealerDraw, 680);
+    return;
+  }
+  var ps = xdScore(XD.player), ds = xdScore(XD.dealer);
+  if      (ds > 21) xdEnd('win',  t('xdDlBust') + ' (' + ds + ')');
+  else if (ps > ds) xdEnd('win',  ps + ' vs ' + ds + ' — ' + t('xdWin'));
+  else if (ds > ps) xdEnd('lose', ps + ' vs ' + ds + ' — ' + t('xdLose'));
+  else              xdEnd('draw', ps + ' vs ' + ds + ' — ' + t('xdDraw'));
+}
+
+function xdEnd(outcome, msg) {
+  XD.phase = 'done';
+  var won = 0;
+  if (outcome === 'win') {
+    won = xdBJ(XD.player) ? Math.floor(XD.bet * 1.5) : XD.bet;
+    XD.chips += won;
+    if (xdBJ(XD.player)) SFX.play('bj'); else SFX.play('win');
+  } else if (outcome === 'lose') {
+    XD.chips -= XD.bet;
+    SFX.play('lose');
+  } else {
+    SFX.play('click');
+  }
+  if (XD.chips < 10) { XD.chips = 500; notify(t('outOfChips')); }
+  try { localStorage.setItem('xd_chips', XD.chips); } catch (e) {}
+  _xdAnim = { d: 0, p: 0 }; xdRender();
+
+  var chipMsg = outcome === 'win'
+    ? '<br><span style="color:var(--win)">+' + won + ' chips</span>'
+    : outcome === 'lose'
+      ? '<br><span style="color:var(--lose)">-' + XD.bet + ' chips</span>'
+      : '';
+  showResult(msg, t('chipsLeft') + ' <strong>' + XD.chips + '</strong>' + chipMsg, outcome, function () {
+    XD.bet = 0; XD.phase = 'betting';
+    XD.player = []; XD.dealer = [];
+    _xdAnim = { d: 0, p: 0 }; xdRender();
+  });
+}
+
+/* ============================================================
+   UTILS — SCREEN / RESULT / NOTIFY / THEME
+   ============================================================ */
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(function (s) { s.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+  document.body.classList.toggle('in-game', id !== 'menu');
+  if (id === 'menu') checkContinue();
+}
+
+function goMenu() { SFX.play('click'); showScreen('menu'); }
+
+function startTienLen() {
+  SFX.play('click');
+  showScreen('tienlen');
+  tlInit();
+}
+
+var _resultCb = null;
+function showResult(title, descHtml, type, onAgain) {
+  document.querySelectorAll('.overlay').forEach(function (el) { el.remove(); });
+  _resultCb = onAgain;
+  var ov   = document.createElement('div');
+  ov.className = 'overlay';
+  var icon = type === 'win' ? '🏆 ' : type === 'lose' ? '😓 ' : '🤝 ';
+  ov.innerHTML =
+    '<div class="result-box">' +
+      '<div class="result-title ' + type + '">' + icon + title + '</div>' +
+      '<div class="result-desc">' + descHtml + '</div>' +
+      '<div class="result-btns">' +
+        '<button class="btn accent" onclick="document.querySelector(\'.overlay\').remove();_resultCb&&_resultCb()">' + t('playAgain') + '</button>' +
+        '<button class="btn" onclick="document.querySelector(\'.overlay\').remove();goMenu()">' + t('home') + '</button>' +
+      '</div>' +
+    '</div>';
+  document.body.appendChild(ov);
+}
+
+function notify(msg) {
+  document.querySelectorAll('.notif').forEach(function (n) { n.remove(); });
+  var el = document.createElement('div');
+  el.className = 'notif'; el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(function () { el.remove(); }, 2500);
+}
+
+/* ===== THEME ===== */
+var _dark = true;
+function toggleTheme() {
+  SFX.play('click');
+  _dark = !_dark;
+  document.documentElement.dataset.theme = _dark ? 'dark' : 'light';
+  updateThemeBtns();
+}
+function updateThemeBtns() {
+  var lbl = _dark ? '☀️' : '🌙';
+  ['menu-theme-btn','tl-theme-btn','xd-theme-btn'].forEach(function (id) {
+    var el = document.getElementById(id); if (el) el.textContent = lbl;
+  });
+}
+
+/* ============================================================
+   TUTORIAL
+   ============================================================ */
+var TUT = {
+  tl: {
+    vi: {
+      title: '📖 Cách chơi Tiến Lên',
+      sections: [
+        { h: 'Mục tiêu', p: 'Đánh hết bài trên tay trước các người chơi khác. Người hết bài đầu tiên thắng 🥇.' },
+        { h: 'Thứ tự bài (thấp → cao)', p: '3 · 4 · 5 · 6 · 7 · 8 · 9 · 10 · J · Q · K · A · 2\nChất: ♠ &lt; ♣ &lt; ♦ &lt; ♥' },
+        { h: 'Các kiểu đánh', items: [
+          '🃏 Rác — 1 lá bất kỳ',
+          '👥 Đôi — 2 lá cùng số',
+          '👨‍👩‍👦 Sám — 3 lá cùng số',
+          '💣 Tứ quý — 4 lá cùng số (đánh được con 2)',
+          '🔢 Sảnh — 3+ lá liên tiếp (không có 2)',
+          '🔗 Đôi thông — 3+ đôi liên tiếp (đánh được con 2)'
+        ]},
+        { h: 'Luật đặc biệt', items: [
+          'Đầu ván: người có 3♠ phải đánh trước và bắt buộc bao gồm 3♠',
+          'Con 2 là bài mạnh nhất; chỉ bị đánh bởi tứ quý hoặc đôi thông',
+          'Khi tất cả người chơi còn lại pass → lượt mới, người vừa thắng dẫn'
+        ]}
+      ]
+    },
+    en: {
+      title: '📖 How to Play Tien Len',
+      sections: [
+        { h: 'Goal', p: 'Be the first to play all cards from your hand. First to empty wins 🥇.' },
+        { h: 'Card order (low → high)', p: '3 · 4 · 5 · 6 · 7 · 8 · 9 · 10 · J · Q · K · A · 2\nSuit: ♠ &lt; ♣ &lt; ♦ &lt; ♥' },
+        { h: 'Valid combinations', items: [
+          '🃏 Single — any 1 card',
+          '👥 Pair — 2 cards of the same rank',
+          '👨‍👩‍👦 Triple — 3 cards of the same rank',
+          '💣 Four of a Kind — beats any single 2 or 3-pair sequence',
+          '🔢 Straight — 3+ consecutive ranks (no 2s)',
+          '🔗 Consecutive Pairs — 3+ consecutive pairs (beats a single 2)'
+        ]},
+        { h: 'Special rules', items: [
+          'First turn: holder of 3♠ must lead and must include 3♠',
+          '2 is the strongest card; only beaten by four-of-a-kind or long cons. pairs',
+          'When all remaining players pass → new round, last winner leads'
+        ]}
+      ]
+    }
+  },
+  xd: {
+    vi: {
+      title: '📖 Cách chơi Xì Dách',
+      sections: [
+        { h: 'Mục tiêu', p: 'Đạt điểm cao hơn Dealer nhưng không vượt quá 21. Vượt 21 là Quắc — thua ngay.' },
+        { h: 'Tính điểm', items: [
+          'A = 11 điểm (hoặc 1 nếu bị quắc)',
+          '10 / J / Q / K = 10 điểm',
+          '2–9 = đúng mặt số'
+        ]},
+        { h: 'Các nước đi', items: [
+          '🃏 Chia bài — đặt cược rồi bắt đầu ván',
+          '➕ Rút thêm — rút thêm 1 lá (phải rút khi &lt; 16 điểm)',
+          '✋ Dừng — giữ điểm hiện tại, Dealer rút bài'
+        ]},
+        { h: 'Tay đặc biệt', items: [
+          '🌟 Xì Dách — A + 10/J/Q/K ngay từ đầu → thắng 1.5× cược',
+          '🃏 Xì Bàn — 2 con A → thắng ngay',
+          '🎉 Ngũ Linh — 5 lá không quắc → thắng ngay'
+        ]},
+        { h: 'Dealer', p: 'Dealer tự động rút bài cho đến khi đủ 17 điểm. Dealer quắc → bạn thắng.' }
+      ]
+    },
+    en: {
+      title: '📖 How to Play Blackjack',
+      sections: [
+        { h: 'Goal', p: 'Score higher than the Dealer without exceeding 21. Going over 21 is a Bust — instant loss.' },
+        { h: 'Card values', items: [
+          'A = 11 (or 1 to avoid busting)',
+          '10 / J / Q / K = 10 points',
+          '2–9 = face value'
+        ]},
+        { h: 'Actions', items: [
+          '🃏 Deal — place a bet, then start the round',
+          '➕ Hit — draw one more card (must hit when under 16)',
+          '✋ Stand — keep current score, Dealer draws'
+        ]},
+        { h: 'Special hands', items: [
+          '🌟 Blackjack — A + 10/J/Q/K on first deal → win 1.5× bet',
+          '🃏 Double Ace — 2 Aces dealt → instant win',
+          '🎉 Five Card Charlie — 5 cards without busting → instant win'
+        ]},
+        { h: 'Dealer rule', p: 'Dealer always draws until reaching 17+. Dealer busts → you win.' }
+      ]
+    }
+  }
+};
+
+function showTutorial(game) {
+  SFX.play('click');
+  /* Remove any existing tutorial */
+  document.querySelectorAll('.tut-overlay').forEach(function (el) { el.remove(); });
+
+  var data = TUT[game][LANG] || TUT[game]['vi'];
+
+  /* Build sections HTML */
+  var sectionsHtml = '';
+  data.sections.forEach(function (sec) {
+    sectionsHtml += '<div class="tut-section"><h3>' + sec.h + '</h3>';
+    if (sec.p) {
+      /* Replace literal \n with <br> */
+      sectionsHtml += '<p>' + sec.p.replace(/\n/g, '<br>') + '</p>';
+    }
+    if (sec.items) {
+      sectionsHtml += '<ul>';
+      sec.items.forEach(function (it) { sectionsHtml += '<li>' + it + '</li>'; });
+      sectionsHtml += '</ul>';
+    }
+    sectionsHtml += '</div>';
+  });
+
+  var closeLabel = LANG === 'vi' ? 'Đã hiểu, chơi thôi! 🎮' : 'Got it, let\'s play! 🎮';
+
+  var ov = document.createElement('div');
+  ov.className = 'tut-overlay';
+  ov.innerHTML =
+    '<div class="tut-box">' +
+      '<h2>' + data.title + '</h2>' +
+      sectionsHtml +
+      '<button class="btn accent tut-close" onclick="this.closest(\'.tut-overlay\').remove()">' +
+        closeLabel +
+      '</button>' +
+    '</div>';
+
+  /* Close on backdrop click */
+  ov.addEventListener('click', function (e) {
+    if (e.target === ov) ov.remove();
+  });
+
+  document.body.appendChild(ov);
+}
+
+/* ============================================================
+   STARTUP
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', function () {
+  updateThemeBtns();
+  applyLang();
+  checkContinue();
+});
+</script>
+</body>
+</html>
 
 /* ===== TOPBAR ===== */
 .topbar {
