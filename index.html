@@ -300,6 +300,84 @@ body::before {
 .tut-close {
   display: block; width: 100%; margin-top: 18px;
 }
+/* ===== LOBBY (mode select before TL/XD) ===== */
+#lobby { align-items: center; justify-content: center; gap: 20px; padding: 30px 20px; }
+.lobby-title {
+  font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--accent);
+  font-weight: 900; text-align: center;
+}
+.lobby-sub { font-size: 0.88rem; color: var(--text-dim); text-align: center; }
+.lobby-cards { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+.lobby-card {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 24px 28px; text-align: center; cursor: pointer; min-width: 200px;
+  transition: transform 0.22s cubic-bezier(.34,1.56,.64,1), box-shadow 0.22s;
+}
+.lobby-card:hover  { transform: translateY(-5px) scale(1.02); box-shadow: 0 10px 30px rgba(0,0,0,0.35), 0 0 0 1px var(--accent); }
+.lobby-card:active { transform: scale(0.97); }
+.lobby-card .lc-icon { font-size: 2.6rem; margin-bottom: 12px; }
+.lobby-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--accent); margin-bottom: 6px; }
+.lobby-card p  { font-size: 0.8rem; color: var(--text-dim); line-height: 1.5; }
+
+/* Online room panel */
+.room-panel {
+  background: var(--surface); border: 1px solid rgba(212,170,80,0.3);
+  border-radius: 14px; padding: 20px 24px; width: 100%; max-width: 380px;
+  display: flex; flex-direction: column; gap: 10px; animation: popIn 0.25s cubic-bezier(.34,1.56,.64,1);
+}
+.room-panel h3 { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1rem; }
+.room-input {
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 8px;
+  color: var(--text); font-size: 1rem; padding: 8px 12px; width: 100%;
+  font-family: 'DM Sans', sans-serif; outline: none;
+}
+.room-input:focus { border-color: var(--accent); }
+.room-code-display {
+  font-family: 'Playfair Display', serif; font-size: 2.2rem; font-weight: 900;
+  color: var(--accent); letter-spacing: 0.18em; text-align: center;
+  background: var(--surface2); border-radius: 8px; padding: 10px;
+}
+.room-players { font-size: 0.82rem; color: var(--text-dim); text-align: center; min-height: 1.4em; }
+.room-btn-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+
+/* ===== PHỎM / TÁ LẢ ===== */
+.ph-layout {
+  flex: 1; display: grid; grid-template-rows: auto 1fr auto auto;
+  gap: 8px; padding: 8px 10px; max-width: 980px; margin: 0 auto; width: 100%;
+}
+.ph-center {
+  background: var(--surface2); border: 1px solid var(--border); border-radius: 14px;
+  padding: 10px 14px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 8px; min-height: 120px;
+}
+.ph-discard-area {
+  display: flex; gap: 18px; align-items: center; justify-content: center; flex-wrap: wrap;
+}
+.ph-noc {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  font-size: 0.75rem; color: var(--text-dim);
+}
+.ph-noc-deck {
+  width: 58px; height: 84px; background: linear-gradient(135deg, #1a3a8a, #1e4db8);
+  border: 1.5px solid #2952c8; border-radius: 8px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; transition: transform 0.15s;
+  box-shadow: 2px 3px 8px var(--card-shadow);
+}
+.ph-noc-deck:hover { transform: translateY(-4px); }
+.ph-noc-deck:disabled, .ph-noc-deck[disabled] { opacity: 0.4; cursor: not-allowed; transform: none; }
+.ph-round-info { font-size: 0.78rem; color: var(--text-dim); }
+.ph-phom-display {
+  display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; align-items: flex-start; margin-top: 6px;
+}
+.ph-phom-group {
+  display: flex; gap: 2px; background: rgba(212,170,80,0.1);
+  border: 1px solid rgba(212,170,80,0.25); border-radius: 8px; padding: 4px 6px;
+}
+.ph-deadwood-group {
+  display: flex; gap: 2px; background: rgba(231,76,60,0.08);
+  border: 1px solid rgba(231,76,60,0.2); border-radius: 8px; padding: 4px 6px;
+}
 </style>
 </head>
 <body>
@@ -323,15 +401,20 @@ body::before {
     <div class="subtitle" data-i18n="menuSub">Tiến Lên · Xì Dách</div>
   </div>
   <div class="menu-cards-row">
-    <div class="mode-card" onclick="startTienLen()">
+    <div class="mode-card" onclick="openLobby('tl')">
       <span class="mode-icon">🀄</span>
       <h2 data-i18n="tlName">Tiến Lên Miền Nam</h2>
       <p  data-i18n="tlDesc">52 lá · 4 người · Đánh hết bài trước</p>
     </div>
-    <div class="mode-card" onclick="startXiDach()">
+    <div class="mode-card" onclick="openLobby('xd')">
       <span class="mode-icon">🂡</span>
       <h2 data-i18n="xdName">Xì Dách</h2>
       <p  data-i18n="xdDesc">Player vs Dealer · Không quá 21 điểm</p>
+    </div>
+    <div class="mode-card" onclick="startPhom()">
+      <span class="mode-icon">🃏</span>
+      <h2 data-i18n="phName">Phỏm · Tá Lả</h2>
+      <p  data-i18n="phDesc">52 lá · 4 người · Ít rác thắng</p>
     </div>
   </div>
   <div class="continue-bar" id="tl-continue-bar" style="display:none">
@@ -426,6 +509,97 @@ body::before {
   </div>
 </div>
 
+<!-- ===== LOBBY ===== -->
+<div class="screen" id="lobby">
+  <div class="topbar">
+    <div class="topbar-title" id="lobby-title">Chọn chế độ</div>
+    <div class="topbar-actions">
+      <button class="icon-btn" onclick="goMenu()">🏠</button>
+    </div>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:24px 16px">
+    <div class="lobby-sub" id="lobby-sub"></div>
+    <div class="lobby-cards">
+      <div class="lobby-card" id="lobby-solo-card" onclick="lobbySolo()">
+        <div class="lc-icon">🤖</div>
+        <h3 id="lobby-solo-title">Chơi với Bot</h3>
+        <p id="lobby-solo-desc">Một mình chơi với máy</p>
+      </div>
+      <div class="lobby-card" id="lobby-online-card" onclick="lobbyShowOnline()">
+        <div class="lc-icon">🌐</div>
+        <h3 id="lobby-online-title">Chơi Online</h3>
+        <p id="lobby-online-desc">Tạo phòng hoặc vào phòng</p>
+      </div>
+    </div>
+    <div class="room-panel" id="room-panel" style="display:none">
+      <h3 id="room-panel-title">Tạo phòng</h3>
+      <input class="room-input" id="room-name-input" placeholder="Tên của bạn" maxlength="16">
+      <div id="room-code-area" style="display:none">
+        <div class="room-code-display" id="room-code-disp">----</div>
+        <div class="room-players" id="room-players-info">Đang chờ người chơi...</div>
+        <div class="room-btn-row">
+          <button class="btn accent" id="room-start-btn" onclick="wsStartGame()" disabled>▶ Bắt đầu</button>
+          <button class="btn danger sm" onclick="wsLeave()">Rời phòng</button>
+        </div>
+      </div>
+      <div id="room-join-area" style="display:none">
+        <input class="room-input" id="room-code-input" placeholder="Mã phòng (4 ký tự)" maxlength="4" style="text-transform:uppercase;letter-spacing:0.2em">
+        <div class="room-btn-row">
+          <button class="btn accent" onclick="wsJoin()">Vào phòng 🚪</button>
+        </div>
+        <div class="room-players" id="room-join-status"></div>
+      </div>
+      <div class="room-btn-row">
+        <button class="btn sm blue" id="room-create-btn" onclick="wsCreate()">Tạo phòng mới</button>
+        <button class="btn sm" id="room-joinbtn" onclick="showJoinForm()">Vào phòng có sẵn</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PHỎM / TÁ LẢ ===== -->
+<div class="screen" id="phom">
+  <div class="topbar">
+    <div class="topbar-title">🀄 Phỏm · Tá Lả</div>
+    <div class="topbar-actions">
+      <button class="icon-btn sfx-btn" onclick="SFX.toggle()">🔊</button>
+      <button class="icon-btn" onclick="showTutorial('ph')">❓</button>
+      <button class="lang-btn" id="ph-lang-btn" onclick="toggleLang()">EN</button>
+      <button class="icon-btn" id="ph-theme-btn" onclick="toggleTheme()">☀️</button>
+      <button class="icon-btn" onclick="goMenu()">🏠</button>
+    </div>
+  </div>
+  <div class="ph-layout">
+    <div class="bots-row" id="ph-bots-row"></div>
+    <div class="ph-center">
+      <div class="turn-label" id="ph-turn-label">Đang chia bài...</div>
+      <div class="ph-discard-area">
+        <div style="text-align:center">
+          <div style="font-size:0.72rem;color:var(--text-dim);margin-bottom:4px" id="ph-discard-label">Bài vừa đánh</div>
+          <div id="ph-discard-slot" style="min-width:58px;min-height:84px;display:flex;align-items:center;justify-content:center"></div>
+        </div>
+        <div class="ph-noc">
+          <div style="font-size:0.72rem;margin-bottom:2px" id="ph-noc-label">Nọc</div>
+          <button class="ph-noc-deck" id="ph-draw-btn" onclick="phDraw()">🂠</button>
+          <div id="ph-noc-count">0 lá</div>
+        </div>
+      </div>
+      <div class="ph-round-info" id="ph-round-info"></div>
+    </div>
+    <div class="player-area">
+      <div class="player-label">
+        <span>👤 Bạn · <span id="ph-card-count">9</span> lá</span>
+        <span id="ph-player-info" style="color:var(--accent)"></span>
+      </div>
+      <div class="hand-scroll" id="ph-hand"></div>
+    </div>
+    <div class="action-bar">
+      <button class="btn accent" id="ph-eat-btn"     onclick="phEat()">Ăn ✋</button>
+      <button class="btn danger" id="ph-discard-btn" onclick="phDoDiscard()">Đánh ▶</button>
+    </div>
+  </div>
+</div>
+
 <script>
 /* ============================================================
    I18N — khai báo TRƯỚC mọi thứ để t() luôn sẵn sàng
@@ -436,10 +610,11 @@ var LANG = (function () {
 
 var STRINGS = {
   vi: {
-    menuTitle:'Card Games', menuSub:'Tiến Lên · Xì Dách',
+    menuTitle:'Card Games', menuSub:'Tiến Lên · Xì Dách · Phỏm',
     tlName:'Tiến Lên Miền Nam', tlDesc:'52 lá · 4 người · Đánh hết bài trước',
     xdName:'Xì Dách', xdDesc:'Player vs Dealer · Không quá 21 điểm',
-    menuFooter:'© 2026 Card Games · Offline',
+    phName:'Phỏm · Tá Lả', phDesc:'52 lá · 4 người · Ít rác thắng',
+    menuFooter:'© {YEAR} Card Games · Offline',
     continueHint:'Có ván Tiến Lên đang dở:',
     continueGame:'▶ Tiếp tục', deleteSave:'✕ Xóa ván',
     sort:'⇅ Sắp xếp', you:'👤 Bạn', cards:' lá',
@@ -470,15 +645,24 @@ var STRINGS = {
     score:'Điểm:', bjLabel:'🌟 Xì Dách!', xiBanLabel:'🃏 Xì Bàn!',
     ngLinh:'🎉 Ngũ Linh!', bust:'💥 Quắc!',
     playAgain:'Chơi lại', home:'🏠 Menu',
+    phUu:'🎉 Ù! Bạn thắng!', phRounds:'Vòng', phOf:'/', phLeft:' còn lại',
+    phYourTurn:'🎮 Lượt bạn', phBotTurn:'⏳ Lượt',
+    phDiscard:'đánh ra:', phDisPhase:'Chọn bài để đánh ra',
+    phTakePhase:'Ăn hoặc bốc bài', phNoc:'Nọc', phGameEnd:'🏁 Ván kết thúc!',
+    phWin:'🥇 Ít rác nhất — Bạn thắng!', phLose:'😓 Thua rồi!',
+    phUuOther:' ù rồi!', phDeadwood:'Rác:', phPts:' điểm',
+    phEat:'Ăn ✋', phDiscardBtn:'Đánh ▶', phDrawBtn:'Nọc',
     botNames:['Bot 1','Bot 2','Bot 3'],
     playerNames:['Bạn','Bot 1','Bot 2','Bot 3'],
+    phBotNames:['Bot A','Bot B','Bot C'],
     cnames:{ single:'Rác', pair:'Đôi', triple:'Sám', four:'Tứ quý', straight:'Sảnh', conspair:'Đôi thông' }
   },
   en: {
-    menuTitle:'Card Games', menuSub:'Tien Len · Blackjack',
+    menuTitle:'Card Games', menuSub:'Tien Len · Blackjack · Phom',
     tlName:'Tien Len (Southern)', tlDesc:'52 cards · 4 players · Empty hand to win',
     xdName:'Blackjack', xdDesc:'Player vs Dealer · Do not go over 21',
-    menuFooter:'© 2026 Card Games · Offline',
+    phName:'Phom · Ta La', phDesc:'52 cards · 4 players · Least deadwood wins',
+    menuFooter:'© {YEAR} Card Games · Offline',
     continueHint:'Tien Len game in progress:',
     continueGame:'▶ Continue', deleteSave:'✕ Delete',
     sort:'⇅ Sort', you:'👤 You', cards:' cards',
@@ -509,8 +693,16 @@ var STRINGS = {
     score:'Score:', bjLabel:'🌟 Blackjack!', xiBanLabel:'🃏 Double Ace!',
     ngLinh:'🎉 Five Card Charlie!', bust:'💥 Bust!',
     playAgain:'Play Again', home:'🏠 Menu',
+    phUu:'🎉 Phom! You win!', phRounds:'Round', phOf:'/', phLeft:' remaining',
+    phYourTurn:'🎮 Your turn', phBotTurn:'⏳ Turn of',
+    phDiscard:'discarded:', phDisPhase:'Choose a card to discard',
+    phTakePhase:'Take card or draw from deck', phNoc:'Deck', phGameEnd:'🏁 Game over!',
+    phWin:'🥇 Least deadwood — You win!', phLose:'😓 You lost!',
+    phUuOther:' went out!', phDeadwood:'Deadwood:', phPts:' pts',
+    phEat:'Take ✋', phDiscardBtn:'Discard ▶', phDrawBtn:'Draw',
     botNames:['Bot 1','Bot 2','Bot 3'],
     playerNames:['You','Bot 1','Bot 2','Bot 3'],
+    phBotNames:['Bot A','Bot B','Bot C'],
     cnames:{ single:'Single', pair:'Pair', triple:'Triple', four:'Four of a Kind', straight:'Straight', conspair:'Con. Pairs' }
   }
 };
@@ -521,11 +713,12 @@ function t(key) {
 }
 
 function applyLang() {
+  var yr = new Date().getFullYear();
   document.querySelectorAll('[data-i18n]').forEach(function (el) {
-    el.textContent = t(el.dataset.i18n);
+    el.textContent = t(el.dataset.i18n).replace('{YEAR}', yr);
   });
   var nxt = LANG === 'vi' ? 'EN' : 'VI';
-  ['menu-lang-btn','tl-lang-btn','xd-lang-btn'].forEach(function (id) {
+  ['menu-lang-btn','tl-lang-btn','xd-lang-btn','ph-lang-btn'].forEach(function (id) {
     var el = document.getElementById(id);
     if (el) el.textContent = nxt;
   });
@@ -533,6 +726,7 @@ function applyLang() {
   if (sc) {
     if (sc.id === 'tienlen' && TL.hands[0].length > 0) tlRender();
     if (sc.id === 'xidach') xdRender();
+    if (sc.id === 'phom' && PH.hands[0].length > 0) phRender();
   }
 }
 
@@ -1687,10 +1881,746 @@ function toggleTheme() {
 }
 function updateThemeBtns() {
   var lbl = _dark ? '☀️' : '🌙';
-  ['menu-theme-btn','tl-theme-btn','xd-theme-btn'].forEach(function (id) {
+  ['menu-theme-btn','tl-theme-btn','xd-theme-btn','ph-theme-btn'].forEach(function (id) {
     var el = document.getElementById(id); if (el) el.textContent = lbl;
   });
 }
+
+/* ============================================================
+   LOBBY — mode select (solo vs online) for TL and XD
+   ============================================================ */
+var _lobbyGame = ''; /* 'tl' | 'xd' */
+
+function openLobby(game) {
+  SFX.play('click');
+  _lobbyGame = game;
+  /* Reset room panel state */
+  document.getElementById('room-panel').style.display       = 'none';
+  document.getElementById('room-code-area').style.display   = 'none';
+  document.getElementById('room-join-area').style.display   = 'none';
+
+  var names = {
+    tl: { title: LANG==='vi' ? 'Tiến Lên Miền Nam' : 'Tien Len',
+          sub:   LANG==='vi' ? 'Chọn chế độ chơi' : 'Select game mode',
+          solo:  LANG==='vi' ? 'Chơi với Bot' : 'vs Bots',
+          soloD: LANG==='vi' ? 'Đơn giản, không cần internet' : 'Offline, play against bots',
+          onl:   LANG==='vi' ? 'Chơi Online' : 'Play Online',
+          onlD:  LANG==='vi' ? 'Tạo phòng, mời bạn bè' : 'Create a room, invite friends' },
+    xd: { title: LANG==='vi' ? 'Xì Dách' : 'Blackjack',
+          sub:   LANG==='vi' ? 'Chọn chế độ chơi' : 'Select game mode',
+          solo:  LANG==='vi' ? 'Chơi với Bot' : 'vs Bot Dealer',
+          soloD: LANG==='vi' ? 'Đơn giản, không cần internet' : 'Offline vs dealer bot',
+          onl:   LANG==='vi' ? 'Chơi Online' : 'Play Online',
+          onlD:  LANG==='vi' ? 'Chơi cùng bạn bè (tối đa 2 người)' : 'Play with a friend (max 2)' }
+  };
+  var n = names[game];
+  document.getElementById('lobby-title').textContent        = n.title;
+  document.getElementById('lobby-sub').textContent          = n.sub;
+  document.getElementById('lobby-solo-title').textContent   = n.solo;
+  document.getElementById('lobby-solo-desc').textContent    = n.soloD;
+  document.getElementById('lobby-online-title').textContent = n.onl;
+  document.getElementById('lobby-online-desc').textContent  = n.onlD;
+  showScreen('lobby');
+}
+
+function lobbySolo() {
+  SFX.play('click');
+  if (_lobbyGame === 'tl') { showScreen('tienlen'); tlInit(); }
+  else                      { startXiDach(); }
+}
+
+function lobbyShowOnline() {
+  SFX.play('click');
+  document.getElementById('room-panel').style.display = 'flex';
+  document.getElementById('room-code-area').style.display  = 'none';
+  document.getElementById('room-join-area').style.display  = 'none';
+  document.getElementById('room-panel-title').textContent  =
+    LANG === 'vi' ? 'Chơi Online' : 'Play Online';
+  document.getElementById('room-name-input').value = '';
+}
+
+function showJoinForm() {
+  SFX.play('click');
+  document.getElementById('room-join-area').style.display  = 'flex';
+  document.getElementById('room-create-btn').style.display = 'none';
+  document.getElementById('room-joinbtn').style.display    = 'none';
+  document.getElementById('room-code-input').value         = '';
+  document.getElementById('room-join-status').textContent  = '';
+}
+
+/* ============================================================
+   WEBSOCKET CLIENT
+   ============================================================ */
+var WS = null;
+var _wsRoom = '';
+var _wsName = '';
+var _wsRole = ''; /* 'host' | 'guest' */
+
+/* Server URL — replace with your deployed server address */
+var WS_URL = 'wss://card-games-production.up.railway.app';
+
+function wsConnect(onOpen) {
+  if (WS && WS.readyState <= 1) { if (onOpen) onOpen(); return; }
+  try {
+    WS = new WebSocket(WS_URL);
+    WS.onopen    = function () { if (onOpen) onOpen(); };
+    WS.onmessage = function (ev) {
+      try { wsHandle(JSON.parse(ev.data)); } catch (e) {}
+    };
+    WS.onerror   = function () { wsNotify(LANG==='vi' ? '❌ Không kết nối được server' : '❌ Cannot connect to server'); };
+    WS.onclose   = function () {};
+  } catch (e) {
+    wsNotify(LANG==='vi' ? '❌ WebSocket không khả dụng' : '❌ WebSocket not available');
+  }
+}
+
+function wsSend(obj) {
+  if (WS && WS.readyState === 1) WS.send(JSON.stringify(obj));
+}
+
+function wsCreate() {
+  _wsName = (document.getElementById('room-name-input').value || '').trim();
+  if (!_wsName) {
+    wsNotify(LANG==='vi' ? 'Nhập tên của bạn trước!' : 'Enter your name first!'); return;
+  }
+  wsConnect(function () {
+    _wsRole = 'host';
+    wsSend({ type: 'create', game: _lobbyGame, name: _wsName });
+  });
+}
+
+function wsJoin() {
+  _wsName = (document.getElementById('room-name-input').value || '').trim();
+  var code = (document.getElementById('room-code-input').value || '').trim().toUpperCase();
+  if (!_wsName) { wsNotify(LANG==='vi' ? 'Nhập tên của bạn trước!' : 'Enter your name first!'); return; }
+  if (code.length !== 4) { wsNotify(LANG==='vi' ? 'Mã phòng phải 4 ký tự' : 'Room code must be 4 chars'); return; }
+  wsConnect(function () {
+    _wsRole = 'guest';
+    _wsRoom = code;
+    wsSend({ type: 'join', game: _lobbyGame, name: _wsName, code: code });
+  });
+}
+
+function wsStartGame() {
+  wsSend({ type: 'start', code: _wsRoom });
+}
+
+function wsLeave() {
+  wsSend({ type: 'leave', code: _wsRoom });
+  if (WS) { WS.close(); WS = null; }
+  document.getElementById('room-panel').style.display     = 'none';
+  document.getElementById('room-code-area').style.display = 'none';
+  document.getElementById('room-join-area').style.display = 'none';
+}
+
+function wsHandle(msg) {
+  switch (msg.type) {
+    case 'created':
+      _wsRoom = msg.code;
+      document.getElementById('room-code-area').style.display  = 'flex';
+      document.getElementById('room-join-area').style.display  = 'none';
+      document.getElementById('room-create-btn').style.display = 'none';
+      document.getElementById('room-joinbtn').style.display    = 'none';
+      document.getElementById('room-code-disp').textContent    = msg.code;
+      document.getElementById('room-players-info').textContent =
+        '1/' + (msg.maxPlayers||4) + ' ' + (LANG==='vi' ? 'người' : 'players');
+      break;
+
+    case 'joined':
+      document.getElementById('room-join-status').textContent =
+        LANG==='vi' ? '✅ Đã vào phòng ' + msg.code : '✅ Joined room ' + msg.code;
+      document.getElementById('room-code-area').style.display = 'flex';
+      document.getElementById('room-code-disp').textContent   = msg.code;
+      break;
+
+    case 'players':
+      var info = msg.players.join(', ') + ' (' + msg.count + '/' + msg.max + ')';
+      ['room-players-info','room-join-status'].forEach(function (id) {
+        var el = document.getElementById(id); if (el) el.textContent = info;
+      });
+      var startBtn = document.getElementById('room-start-btn');
+      if (startBtn) startBtn.disabled = (msg.count < 2);
+      break;
+
+    case 'start_tl':
+      /* Server sends shuffled hands and turn order */
+      wsStartTL(msg);
+      break;
+
+    case 'start_xd':
+      wsStartXD(msg);
+      break;
+
+    case 'move':
+      wsApplyMove(msg);
+      break;
+
+    case 'error':
+      wsNotify('⚠️ ' + (msg.message || 'Error'));
+      break;
+  }
+}
+
+/* Online TL — apply server move to TL state */
+function wsStartTL(msg) {
+  /* msg.hands: array of 4 hand arrays [{r,s},...] */
+  TL.hands = msg.hands.map(function (h) {
+    return h.map(function (c) { return new TCard(c.r, c.s); });
+  });
+  TL.currentTurn = msg.currentTurn || 0;
+  TL.lastCombo = null; TL.lastBy = -1;
+  TL.passCount = 0;   TL.finished = []; TL.selected = [];
+  TL.gameOver  = false;
+  clearVPCache();
+  showScreen('tienlen');
+  tlRender();
+}
+
+function wsStartXD(msg) {
+  /* Online XD: same as local but with server-provided cards */
+  startXiDach();
+  /* Override dealt cards from server */
+  XD.player = msg.player.map(function (c) { return { rank:c.r, suit:c.s }; });
+  XD.dealer = msg.dealer.map(function (c) { return { rank:c.r, suit:c.s }; });
+  XD.hideDealer = true; XD.phase = 'playing';
+  _xdAnim = { d: 2, p: 2 };
+  xdRender();
+}
+
+function wsApplyMove(msg) {
+  /* Relay opponent moves to the local game engine */
+  if (_lobbyGame === 'tl') {
+    if (msg.action === 'play') {
+      var combo = {
+        type: msg.combo.type, rank: msg.combo.rank,
+        suit: msg.combo.suit, ts: msg.combo.ts,
+        len: msg.combo.len,   topRank: msg.combo.topRank,
+        cards: msg.combo.cards.map(function (c) { return new TCard(c.r, c.s); })
+      };
+      TL.currentTurn = msg.pid;
+      tlDoPlay(msg.pid, combo);
+    } else if (msg.action === 'pass') {
+      TL.currentTurn = msg.pid;
+      tlDoPass(msg.pid);
+    }
+  }
+}
+
+function wsNotify(msg) { notify(msg); }
+
+/* ============================================================
+   PHỎM / TÁ LẢ ENGINE
+   ============================================================
+
+   Luật chuẩn:
+   - 4 người chơi, bộ 52 lá, không tính J
+     (bộ Phỏm dùng 52 lá có A-2-3-...-10-J-Q-K)
+   - Chia 9 lá/người, người đầu 10 lá (đánh ngay 1 lá)
+   - Lượt: ăn bài vừa đánh (nếu tạo thành Phỏm) HOẶC bốc nọc
+   - Đánh 1 lá ra
+   - Phỏm: bộ 3-4 lá cùng số HOẶC 3+ lá liên tiếp cùng chất
+   - Ù: hết rác → thắng ngay
+   - Sau 4 vòng (hoặc ai Ù): đếm điểm rác, ít nhất thắng
+   ============================================================ */
+
+/* Phỏm dùng bộ 52 lá nhưng thứ tự rank khác TL:
+   A=1, 2..10, J=11, Q=12, K=13 */
+var PH_RANKS = ['A','2','3','4','5','6','7','8','9','10','J','Q','K'];
+/* Suits: same as TL */
+
+function PCard(rank, suit) { /* rank: 0=A,1=2,...,12=K */
+  this.rank = rank; this.suit = suit;
+}
+Object.defineProperties(PCard.prototype, {
+  rn:  { get: function () { return PH_RANKS[this.rank]; } },
+  ss:  { get: function () { return SUITS_SYM[this.suit]; } },
+  red: { get: function () { return IS_RED[this.suit]; } },
+  pts: { get: function () {
+    /* A=1, 2-9=face, 10/J/Q/K=10 */
+    if (this.rank === 0) return 1;
+    if (this.rank <= 8) return this.rank + 1; /* 2=2,...,9=9 */
+    return 10; /* 10,J,Q,K */
+  }}
+});
+
+function phMakeDeck() {
+  var d = [];
+  for (var s = 0; s < 4; s++) {
+    for (var r = 0; r < 13; r++) {
+      d.push(new PCard(r, s));
+    }
+  }
+  return shuffle(d);
+}
+
+/* ---- Phỏm detection ---- */
+function phIsGroup(cards) {
+  /* 3-4 lá cùng số */
+  if (cards.length < 3 || cards.length > 4) return false;
+  var r = cards[0].rank;
+  for (var i = 1; i < cards.length; i++) if (cards[i].rank !== r) return false;
+  return true;
+}
+
+function phIsSeq(cards) {
+  /* 3+ lá liên tiếp cùng chất */
+  if (cards.length < 3) return false;
+  var sorted = cards.slice().sort(function (a, b) { return a.rank - b.rank; });
+  var s = sorted[0].suit;
+  for (var i = 0; i < sorted.length; i++) {
+    if (sorted[i].suit !== s) return false;
+    if (i > 0 && sorted[i].rank !== sorted[i-1].rank + 1) return false;
+  }
+  return true;
+}
+
+function phIsPhom(cards) {
+  return phIsGroup(cards) || phIsSeq(cards);
+}
+
+/*
+  Best grouping: given a hand, find partition that minimises deadwood.
+  We use a greedy approach with backtracking limited to 3-card + 4-card sets.
+  Returns { phoms: [[cards], ...], deadwood: [cards] }
+*/
+function phBestGrouping(hand) {
+  var best = {
+    phoms: [], deadwood: hand.slice(),
+    pts: hand.reduce(function (s, c) { return s + c.pts; }, 0)
+  };
+
+  function search(remaining, phoms) {
+    var n = remaining.length;
+    if (n < 3) {
+      var pts = remaining.reduce(function (s, c) { return s + c.pts; }, 0);
+      if (pts < best.pts) {
+        best = { phoms: phoms.slice(), deadwood: remaining.slice(), pts: pts };
+      }
+      return;
+    }
+
+    var tried = false;
+
+    /* Try combos of size 4 then 3 */
+    [4, 3].forEach(function (si) {
+      if (si > n) return;
+      var idxs = [];
+      function pickSize(start, depth) {
+        if (depth === si) {
+          var combo = idxs.map(function (i) { return remaining[i]; });
+          if (phIsPhom(combo)) {
+            tried = true;
+            var rest = remaining.filter(function (_, i) { return idxs.indexOf(i) === -1; });
+            phoms.push(combo);
+            search(rest, phoms);
+            phoms.pop();
+          }
+          return;
+        }
+        for (var ix = start; ix <= n - (si - depth); ix++) {
+          idxs.push(ix);
+          pickSize(ix + 1, depth + 1);
+          idxs.pop();
+        }
+      }
+      pickSize(0, 0);
+    });
+
+    if (!tried) {
+      var pts2 = remaining.reduce(function (s, c) { return s + c.pts; }, 0);
+      if (pts2 < best.pts) {
+        best = { phoms: phoms.slice(), deadwood: remaining.slice(), pts: pts2 };
+      }
+    }
+  }
+
+  search(hand, []);
+  return best;
+}
+
+/*
+  Can a player "eat" (ăn) the discard card?
+  Returns the phom that would be formed (including discardCard), or null.
+*/
+function phCanEat(hand, discardCard) {
+  /* Returns a phom combo (array of cards) that includes discardCard, or null */
+  var n = hand.length;
+
+  function trySize(si) {
+    /* Find si cards in hand that, together with discardCard, form a phom */
+    var idxs = [];
+    function pick(start, depth) {
+      if (depth === si) {
+        var combo = idxs.map(function (i) { return hand[i]; }).concat([discardCard]);
+        return phIsPhom(combo) ? combo : null;
+      }
+      for (var ix = start; ix < n; ix++) {
+        idxs.push(ix);
+        var res = pick(ix + 1, depth + 1);
+        if (res) return res;
+        idxs.pop();
+      }
+      return null;
+    }
+    return pick(0, 0);
+  }
+
+  return trySize(2) || trySize(3) || null;
+}
+
+/* ---- State ---- */
+var PH = {
+  hands:      [[], [], [], []],   /* PCard arrays */
+  discard:    null,               /* top of discard pile */
+  discardPile:[],
+  deck:       [],
+  currentTurn:0,
+  phase:      'discard',          /* 'take' | 'discard' */
+  round:      1,
+  maxRounds:  4,
+  selected:   null,               /* index in player hand, or null */
+  gameOver:   false,
+  uuBy:       -1                  /* who went Uu (phom out) */
+};
+
+/* ---- Init ---- */
+function startPhom() {
+  SFX.play('click');
+  showScreen('phom');
+  phInit();
+}
+
+function phInit() {
+  PH.round = 1;
+  PH.gameOver = false;
+  PH.uuBy    = -1;
+  phRedeal();
+}
+
+/* Redeal without touching round counter or gameOver */
+function phRedeal() {
+  var deck = phMakeDeck();
+  PH.hands = [[], [], [], []];
+  PH.discardPile = [];
+  PH.discard     = null;
+  PH.selected    = null;
+
+  /* Deal: player 0 gets 10, others 9 */
+  for (var i = 0; i < 4; i++) {
+    var count = (i === 0) ? 10 : 9;
+    for (var j = 0; j < count; j++) PH.hands[i].push(deck.pop());
+  }
+  PH.deck = deck;
+
+  /* Sort hands */
+  PH.hands.forEach(function (h) {
+    h.sort(function (a, b) { return a.rank !== b.rank ? a.rank - b.rank : a.suit - b.suit; });
+  });
+
+  /* Player 0 always starts each round and must discard first (has 10 lá) */
+  PH.currentTurn = 0;
+  PH.phase = 'discard';
+  SFX.play('deal');
+  phRender();
+}
+
+/* ---- Render ---- */
+function phRender() {
+  phRenderBots();
+  phRenderCenter();
+  phRenderHand();
+  phUpdateButtons();
+}
+
+function phRenderBots() {
+  var row = document.getElementById('ph-bots-row');
+  row.innerHTML = '';
+  for (var i = 1; i <= 3; i++) {
+    var isActive = PH.currentTurn === i && !PH.gameOver;
+    var slot = document.createElement('div');
+    slot.className = 'bot-slot' + (isActive ? ' active-turn' : '');
+    var nameEl = document.createElement('div');
+    nameEl.className = 'bot-name';
+    var g = phBestGrouping(PH.hands[i]);
+    var botLabel = t('phBotNames')[i-1] + ' · ' + PH.hands[i].length + ' ' + (LANG==='vi' ? 'lá' : 'cards');
+    if (isActive) botLabel += ' ⏳';
+    nameEl.textContent = botLabel;
+    slot.appendChild(nameEl);
+    var wrap = document.createElement('div');
+    wrap.className = 'bot-cards-wrap';
+    PH.hands[i].forEach(function (card) {
+      wrap.appendChild(elCard(card, { back: true, sm: true }));
+    });
+    slot.appendChild(wrap);
+    /* Show deadwood pts hint */
+    var hint = document.createElement('div');
+    hint.style.cssText = 'font-size:0.65rem;color:var(--text-dim);text-align:center;margin-top:3px';
+    hint.textContent = (LANG==='vi' ? 'Rác: ' : 'DW: ') + g.pts;
+    slot.appendChild(hint);
+    row.appendChild(slot);
+  }
+}
+
+function phRenderCenter() {
+  /* Turn label */
+  var lbl = document.getElementById('ph-turn-label');
+  if (PH.gameOver) {
+    lbl.textContent = t('phGameEnd');
+  } else if (PH.currentTurn === 0) {
+    lbl.textContent = PH.phase === 'discard' ? t('phDisPhase') : t('phTakePhase');
+  } else {
+    lbl.textContent = t('phBotTurn') + ' ' + t('phBotNames')[PH.currentTurn - 1] + '...';
+  }
+
+  /* Discard slot */
+  var ds = document.getElementById('ph-discard-slot');
+  ds.innerHTML = '';
+  if (PH.discard) {
+    var cardEl = elCard(PH.discard, { anim: false });
+    ds.appendChild(cardEl);
+  }
+
+  /* Noc count */
+  document.getElementById('ph-noc-count').textContent = PH.deck.length + (LANG==='vi' ? ' lá' : ' left');
+
+  /* Round info */
+  document.getElementById('ph-round-info').textContent =
+    t('phRounds') + ' ' + PH.round + t('phOf') + PH.maxRounds;
+}
+
+function phRenderHand() {
+  var handEl = document.getElementById('ph-hand');
+  handEl.innerHTML = '';
+  var myTurn = PH.currentTurn === 0 && !PH.gameOver;
+  var g = phBestGrouping(PH.hands[0]);
+  var inPhom = [];
+  g.phoms.forEach(function (phom) { phom.forEach(function (c) { inPhom.push(c); }); });
+
+  PH.hands[0].forEach(function (card, idx) {
+    var isSel = PH.selected === idx;
+    var isInPhom = inPhom.indexOf(card) !== -1;
+    var el = elCard(card, { selected: isSel });
+    /* Highlight phom cards with subtle border */
+    if (isInPhom && !isSel) {
+      el.style.borderColor = 'var(--highlight)';
+      el.style.boxShadow   = '2px 3px 8px var(--card-shadow), 0 0 0 1.5px var(--highlight)';
+    }
+    if (myTurn) {
+      (function (cardIdx) {
+        el.addEventListener('click', function () { phSelectCard(cardIdx); });
+      })(idx);
+    }
+    handEl.appendChild(el);
+  });
+
+  document.getElementById('ph-card-count').textContent = PH.hands[0].length;
+  /* Show deadwood pts */
+  document.getElementById('ph-player-info').textContent =
+    (LANG==='vi' ? 'Rác: ' : 'DW: ') + g.pts + (LANG==='vi' ? ' điểm' : ' pts');
+}
+
+function phUpdateButtons() {
+  var myTurn  = PH.currentTurn === 0 && !PH.gameOver;
+  var eatBtn  = document.getElementById('ph-eat-btn');
+  var discBtn = document.getElementById('ph-discard-btn');
+  var drawBtn = document.getElementById('ph-draw-btn');
+
+  var canEat = myTurn && PH.phase === 'take' && PH.discard &&
+    !!phCanEat(PH.hands[0], PH.discard);
+
+  eatBtn.disabled  = !canEat;
+  discBtn.disabled = !myTurn || PH.phase !== 'discard' || PH.selected === null;
+  drawBtn.disabled = !myTurn || PH.phase !== 'take';
+}
+
+/* ---- Player actions ---- */
+function phSelectCard(idx) {
+  SFX.play('select');
+  PH.selected = (PH.selected === idx) ? null : idx;
+  phRenderHand();
+  phUpdateButtons();
+}
+
+function phDraw() {
+  /* Player draws from deck */
+  if (PH.currentTurn !== 0 || PH.phase !== 'take') return;
+  if (PH.deck.length === 0) { phEndRound(); return; }
+  SFX.play('play');
+  var card = PH.deck.pop();
+  PH.hands[0].push(card);
+  PH.hands[0].sort(function (a, b) { return a.rank !== b.rank ? a.rank - b.rank : a.suit - b.suit; });
+  PH.selected = null;
+  PH.phase = 'discard';
+  phRender();
+}
+
+function phEat() {
+  /* Player eats the discard */
+  if (PH.currentTurn !== 0 || PH.phase !== 'take' || !PH.discard) return;
+  var formed = phCanEat(PH.hands[0], PH.discard);
+  if (!formed) { notify(LANG==='vi' ? 'Không ăn được lá này!' : 'Cannot take this card!'); return; }
+  SFX.play('play');
+  /* Move discard card to hand; discard slot is now empty until player discards */
+  PH.discardPile.push(PH.discard);
+  PH.hands[0].push(PH.discard);
+  PH.discard = null;
+  PH.hands[0].sort(function (a, b) { return a.rank !== b.rank ? a.rank - b.rank : a.suit - b.suit; });
+  PH.selected = null;
+  PH.phase = 'discard';
+  phRender();
+}
+
+function phDoDiscard() {
+  if (PH.currentTurn !== 0 || PH.phase !== 'discard') return;
+  if (PH.selected === null) { notify(LANG==='vi' ? 'Chọn bài để đánh ra!' : 'Select a card to discard!'); return; }
+  SFX.play('play');
+  var card = PH.hands[0].splice(PH.selected, 1)[0];
+  PH.selected = null;
+  phPlayerDiscard(0, card);
+}
+
+function phPlayerDiscard(pid, card) {
+  /* Push old discard to pile */
+  if (PH.discard) PH.discardPile.push(PH.discard);
+  PH.discard = card;
+
+  /* Check Uu: after discarding, remaining hand has 0 deadwood AND at least 3 cards in phoms */
+  var remaining = PH.hands[pid];
+  var g = remaining.length >= 3 ? phBestGrouping(remaining) : { pts: 999, phoms: [] };
+  if (g.pts === 0 && g.phoms.length > 0) {
+    PH.uuBy = pid;
+    PH.gameOver = true;
+    if (pid === 0) SFX.play('win'); else SFX.play('lose');
+    phRender();
+    if (pid === 0) notify(t('phUu'));
+    else notify(t('phBotNames')[pid-1] + t('phUuOther'));
+    setTimeout(phShowResult, 900);
+    return;
+  }
+
+  /* Check round end (deck empty) */
+  if (PH.deck.length === 0) { phEndRound(); return; }
+
+  /* Advance turn */
+  PH.currentTurn = (PH.currentTurn + 1) % 4;
+  PH.phase = 'take';
+  phRender();
+  if (PH.currentTurn !== 0) setTimeout(phBotTurn, 800);
+}
+
+/* ---- Bot AI ---- */
+function phBotTurn() {
+  if (PH.gameOver || PH.currentTurn === 0) return;
+  var pid  = PH.currentTurn;
+  var hand = PH.hands[pid];
+
+  /* Phase 1: take */
+  if (PH.phase === 'take') {
+    /* Try to eat discard if it improves grouping */
+    var eatResult = PH.discard ? phCanEat(hand, PH.discard) : null;
+    if (eatResult) {
+      /* Eat: discard card goes to hand, slot becomes empty */
+      PH.discardPile.push(PH.discard);
+      hand.push(PH.discard);
+      PH.discard = null;
+      hand.sort(function (a, b) { return a.rank !== b.rank ? a.rank - b.rank : a.suit - b.suit; });
+    } else {
+      /* Draw from deck */
+      if (PH.deck.length === 0) { phEndRound(); return; }
+      hand.push(PH.deck.pop());
+      hand.sort(function (a, b) { return a.rank !== b.rank ? a.rank - b.rank : a.suit - b.suit; });
+    }
+    PH.phase = 'discard';
+    phRender();
+    setTimeout(phBotTurn, 600);
+    return;
+  }
+
+  /* Phase 2: discard */
+  var g = phBestGrouping(hand);
+
+  if (g.deadwood.length === 0) {
+    /* Ù! — bot has zero deadwood after having drawn/eaten.
+       Must still discard one card. Pick the "least valuable" phom card
+       (one that keeps the most phoms intact after removal). */
+    var bestDiscard = hand[hand.length - 1];
+    var bestPts = -1;
+    hand.forEach(function (c) {
+      var trial = hand.filter(function (x) { return x !== c; });
+      var trialG = phBestGrouping(trial);
+      /* After discarding c, check if still Uu */
+      if (trialG.pts === 0 && trialG.deadwood.length === 0) {
+        /* Still Uu after removing c → c is safe to discard */
+        if (c.pts > bestPts) { bestPts = c.pts; bestDiscard = c; }
+      }
+    });
+    var idx = hand.indexOf(bestDiscard);
+    if (idx !== -1) hand.splice(idx, 1);
+    SFX.play('play');
+    phPlayerDiscard(pid, bestDiscard);
+    return;
+  }
+
+  /* Normal: discard highest-point deadwood card */
+  var dw = g.deadwood.slice().sort(function (a, b) { return b.pts - a.pts; });
+  var toDiscard = dw[0];
+  var idx = hand.indexOf(toDiscard);
+  if (idx !== -1) hand.splice(idx, 1);
+  SFX.play('play');
+  phPlayerDiscard(pid, toDiscard);
+}
+
+/* ---- Round / Game End ---- */
+function phEndRound() {
+  /* Called when deck runs out mid-turn — round is over */
+  if (PH.round >= PH.maxRounds) {
+    /* All rounds done → final result */
+    PH.gameOver = true;
+    phRender();
+    var g0 = phBestGrouping(PH.hands[0]);
+    SFX.play(g0.pts === 0 ? 'win' : 'lose');
+    setTimeout(phShowResult, 600);
+  } else {
+    /* Start next round */
+    PH.round++;
+    notify((LANG === 'vi' ? 'Vòng ' : 'Round ') + PH.round + '!');
+    setTimeout(phRedeal, 700);
+  }
+}
+
+function phShowResult() {
+  /* Compute deadwood for all players */
+  var scores = PH.hands.map(function (h) { return phBestGrouping(h).pts; });
+  var minPts = Math.min.apply(null, scores);
+  var playerWon = (scores[0] === minPts);
+
+  var html = '';
+  var names = [LANG==='vi' ? 'Bạn' : 'You',
+    t('phBotNames')[0], t('phBotNames')[1], t('phBotNames')[2]];
+  var sorted = [0,1,2,3].sort(function (a, b) { return scores[a] - scores[b]; });
+  var medals = ['🥇','🥈','🥉','💀'];
+  sorted.forEach(function (pid, i) {
+    var isYou = pid === 0;
+    html += '<div style="margin:5px 0;font-size:' + (isYou ? '1.1rem' : '0.9rem') +
+      ';font-weight:' + (isYou ? '700' : '400') + '">' +
+      medals[i] + ' ' + names[pid] + ' — ' + scores[pid] +
+      (LANG==='vi' ? ' điểm rác' : ' deadwood pts') +
+      (isYou ? ' ←' : '') + '</div>';
+  });
+
+  if (PH.uuBy === 0) {
+    showResult(t('phUu'), html, 'win', startPhom);
+  } else if (PH.uuBy > 0) {
+    showResult(t('phBotNames')[PH.uuBy-1] + (LANG==='vi' ? ' Ù!' : ' wins!'), html, 'lose', startPhom);
+  } else if (playerWon) {
+    showResult(t('phWin'), html, 'win', startPhom);
+  } else {
+    showResult(t('phLose'), html, 'lose', startPhom);
+  }
+}
+
+/* ---- Card renderer for PCard (same shape as TCard) ---- */
+/* Reuse elCard — PCard has same .rn, .ss, .red interface */
 
 /* ============================================================
    TUTORIAL
@@ -1831,8 +2761,77 @@ function showTutorial(game) {
 }
 
 /* ============================================================
-   STARTUP
+   PHỎM TUTORIAL DATA
    ============================================================ */
+TUT.ph = {
+  vi: {
+    title: '📖 Cách chơi Phỏm (Tá Lả)',
+    sections: [
+      { h: 'Mục tiêu', p: 'Gom bài thành các bộ (phỏm), giảm điểm rác về 0. Hết rác trước → Ù (thắng ngay). Cuối ván ai ít điểm rác nhất thắng.' },
+      { h: 'Bộ bài hợp lệ (Phỏm)', items: [
+        '🔢 Sảnh — 3+ lá liên tiếp cùng chất (ví dụ 5♥ 6♥ 7♥)',
+        '👥 Bộ — 3 lá hoặc 4 lá cùng số (ví dụ 8♠ 8♦ 8♥)'
+      ]},
+      { h: 'Luật bài', p: 'Mỗi người được chia 9 lá (người đi đầu 10 lá). Người đầu đánh 1 lá ra bàn.' },
+      { h: 'Lượt chơi', items: [
+        '1. Chọn ĂN lá vừa bị đánh (nếu tạo được phỏm) hoặc BỐC từ nọc',
+        '2. Đánh 1 lá ra bàn',
+        '3. Nếu tay không còn rác → Ù, thắng ngay!'
+      ]},
+      { h: 'Tính điểm rác', items: [
+        'A = 1 điểm · J/Q/K = 10 điểm · số = đúng mặt số',
+        'Lá nằm ngoài phỏm tính là rác',
+        'Sau 4 vòng hoặc khi Ù → tính điểm, ai ít rác nhất thắng'
+      ]}
+    ]
+  }
+}; /* end TUT.xd.vi — this block was xd's old ph tutorial, removed */
+
+/* TUT.ph added below as top-level key */
+TUT.ph = {
+  vi: {
+    title: '📖 Cách chơi Phỏm · Tá Lả',
+    sections: [
+      { h: 'Mục tiêu', p: 'Tạo thành các Phỏm (bộ bài hợp lệ) để giảm điểm rác xuống 0. Sau 4 vòng, ai ít rác nhất thắng.' },
+      { h: 'Phỏm hợp lệ', items: [
+        '🔢 Sảnh (Sequence) — 3+ lá liên tiếp cùng chất (vd: 5♥ 6♥ 7♥)',
+        '👥 Bộ (Group) — 3 hoặc 4 lá cùng số (vd: 8♠ 8♦ 8♥)'
+      ]},
+      { h: 'Chia bài', p: 'Mỗi người 9 lá, người đầu tiên nhận 10 lá và đánh ra 1 lá ngay.' },
+      { h: 'Thứ tự lượt', items: [
+        '1. ĂN lá vừa đánh (nếu tạo được Phỏm) HOẶC BỐC bài từ Nọc',
+        '2. ĐÁNH một lá ra',
+        '3. Nếu không còn rác → ÙU, thắng ngay!'
+      ]},
+      { h: 'Tính điểm rác', items: [
+        'A = 1 điểm · 2–9 = mặt số · 10/J/Q/K = 10 điểm',
+        'Bài không nằm trong Phỏm = rác',
+        'Ít rác nhất sau 4 vòng → thắng'
+      ]}
+    ]
+  },
+  en: {
+    title: '📖 How to Play Phom (Ta La)',
+    sections: [
+      { h: 'Goal', p: 'Form sets (phom) to reduce deadwood to zero. After 4 rounds, fewest deadwood points wins.' },
+      { h: 'Valid sets', items: [
+        '🔢 Sequence — 3+ consecutive cards of the same suit (e.g. 5♥ 6♥ 7♥)',
+        '👥 Group — 3 or 4 cards of same rank (e.g. 8♠ 8♦ 8♥)'
+      ]},
+      { h: 'Deal', p: 'Each player gets 9 cards; first player gets 10 and discards one immediately.' },
+      { h: 'Turn order', items: [
+        '1. TAKE the last discarded card (if it completes a set) OR DRAW from deck',
+        '2. DISCARD one card',
+        '3. No deadwood left → Phom out, instant win!'
+      ]},
+      { h: 'Deadwood scoring', items: [
+        'A = 1 pt · 2–9 = face value · 10/J/Q/K = 10 pts',
+        'Cards not in a set = deadwood',
+        'Fewest deadwood points after 4 rounds wins'
+      ]}
+    ]
+  }
+};
 document.addEventListener('DOMContentLoaded', function () {
   updateThemeBtns();
   applyLang();
