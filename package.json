@@ -1,0 +1,16 @@
+{
+  "name": "card-games-server",
+  "version": "1.0.0",
+  "description": "WebSocket server for Card Games (Tien Len, Blackjack)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "ws": "^8.16.0"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
