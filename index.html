@@ -51,7 +51,7 @@ body::before {
 .screen.active { display: flex; flex-direction: column; }
 
 /* ===== MENU ===== */
-#menu { align-items: center; justify-content: center; gap: 24px; padding: 30px 20px; }
+#menu { align-items: center; justify-content: flex-start; gap: 24px; padding: 30px 20px; overflow-y: auto; }
 .menu-logo { text-align: center; margin-bottom: 4px; }
 .menu-logo h1 {
   font-family: 'Playfair Display', Georgia, serif;
@@ -66,7 +66,8 @@ body::before {
 .menu-cards-row { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
 .mode-card {
   background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
-  padding: 28px 32px; text-align: center; cursor: pointer; width: 260px;
+  padding: 28px 32px; text-align: center; cursor: pointer;
+  width: clamp(200px, 42vw, 260px);
   transition: transform 0.25s cubic-bezier(.34,1.56,.64,1), box-shadow 0.25s;
   backdrop-filter: blur(4px); position: relative; overflow: hidden;
 }
@@ -1053,7 +1054,8 @@ function validPlays(hand, against) {
 /* Cache valid plays for current player turn — cleared on every state change */
 var _vpCache = null;
 function getPlayerValidPlays() {
-  if (!_vpCache) _vpCache = validPlays(TL.hands[0], TL.lastCombo);
+  var mySlot = _wsOnline ? _wsMyIndex : 0;
+  if (!_vpCache) _vpCache = validPlays(TL.hands[mySlot], TL.lastCombo);
   return _vpCache;
 }
 function clearVPCache() { _vpCache = null; }
@@ -1155,6 +1157,7 @@ function checkContinue() {
    TIẾN LÊN — INIT
    ============================================================ */
 function tlInit() {
+  _wsOnline = false; _wsMyIndex = 0; _wsHumanSlots = [0];
   var deck = shuffle(makeDeck()), i;
   TL.hands = [[],[],[],[]];
   TL.finished = []; TL.selected = [];
@@ -1189,9 +1192,11 @@ function tlInit() {
 function tlRender() { tlRenderBots(); tlRenderPlayed(); tlRenderHand(); tlUpdateButtons(); }
 
 function tlRenderBots() {
-  var row = document.getElementById('tl-bots-row');
+  var row    = document.getElementById('tl-bots-row');
+  var mySlot = _wsOnline ? _wsMyIndex : 0;
   row.innerHTML = '';
-  for (var i = 1; i <= 3; i++) {
+  for (var i = 0; i < 4; i++) {
+    if (i === mySlot) continue; /* skip local player's own slot */
     var isDone   = TL.finished.indexOf(i) !== -1;
     var isActive = TL.currentTurn === i && !isDone;
     var slot = document.createElement('div');
@@ -1204,13 +1209,20 @@ function tlRenderBots() {
     }
     var nameEl = document.createElement('div');
     nameEl.className = 'bot-name';
-    nameEl.textContent = t('botNames')[i - 1] + ' · ' + TL.hands[i].length + ' ' + t('cardCount');
+    /* Show human name if this slot is a real player, else bot name */
+    var isHuman = _wsOnline && _wsHumanSlots.indexOf(i) !== -1;
+    var slotName = isHuman
+      ? (TL.playerNames ? TL.playerNames[i] : ('P' + (i+1)))
+      : t('botNames')[i > mySlot ? i - 1 : i];
+    if (isActive) slotName += ' ⏳';
+    nameEl.textContent = slotName + ' · ' + TL.hands[i].length + ' ' + t('cardCount');
     slot.appendChild(nameEl);
     var wrap = document.createElement('div');
     wrap.className = 'bot-cards-wrap';
-    (function (hand, done) {
+    (function (hand, done, human) {
+      /* Show card faces for finished players; backs otherwise (humans also get backs) */
       hand.forEach(function (card) { wrap.appendChild(elCard(card, { back: !done, sm: true })); });
-    })(TL.hands[i], isDone);
+    })(TL.hands[i], isDone, isHuman);
     slot.appendChild(wrap);
     row.appendChild(slot);
   }
@@ -1242,16 +1254,18 @@ function tlRenderPlayed() {
   } else if (TL.finished.indexOf(TL.currentTurn) !== -1) {
     label.textContent = '';
   } else {
-    label.textContent = TL.currentTurn === 0
+    var mySlot = _wsOnline ? _wsMyIndex : 0;
+    label.textContent = TL.currentTurn === mySlot
       ? t('yourTurn')
       : t('botTurn') + ' ' + t('playerNames')[TL.currentTurn] + '...';
   }
 }
 
 function tlRenderHand() {
+  var mySlot   = _wsOnline ? _wsMyIndex : 0;
   var handEl   = document.getElementById('tl-hand');
   handEl.innerHTML = '';
-  var myActive = TL.currentTurn === 0 && TL.finished.indexOf(0) === -1 && !TL.gameOver;
+  var myActive = TL.currentTurn === mySlot && TL.finished.indexOf(mySlot) === -1 && !TL.gameOver;
 
   /* Use cached valid plays */
   var playableSet = [];
@@ -1263,7 +1277,7 @@ function tlRenderHand() {
     });
   }
 
-  TL.hands[0].forEach(function (card) {
+  TL.hands[mySlot].forEach(function (card) {
     var isSel = TL.selected.indexOf(card) !== -1;
     var isPl  = playableSet.indexOf(card) !== -1;
     var el    = elCard(card, { selected: isSel, playable: isPl });
@@ -1273,13 +1287,14 @@ function tlRenderHand() {
     handEl.appendChild(el);
   });
 
-  document.getElementById('tl-card-count').textContent = TL.hands[0].length;
-  var idx0 = TL.finished.indexOf(0);
-  document.getElementById('tl-player-info').textContent = idx0 !== -1 ? MEDALS[idx0] + ' ' + t('done') : '';
+  document.getElementById('tl-card-count').textContent = TL.hands[mySlot].length;
+  var idxMe = TL.finished.indexOf(mySlot);
+  document.getElementById('tl-player-info').textContent = idxMe !== -1 ? MEDALS[idxMe] + ' ' + t('done') : '';
 }
 
 function tlUpdateButtons() {
-  var myTurn = TL.currentTurn === 0 && TL.finished.indexOf(0) === -1 && !TL.gameOver;
+  var mySlot = _wsOnline ? _wsMyIndex : 0;
+  var myTurn = TL.currentTurn === mySlot && TL.finished.indexOf(mySlot) === -1 && !TL.gameOver;
   document.getElementById('tl-play-btn').disabled = !myTurn || TL.selected.length === 0;
   document.getElementById('tl-pass-btn').disabled = !myTurn || !TL.lastCombo;
 }
@@ -1301,7 +1316,8 @@ function tlSortHand() {
 }
 
 function tlPlay() {
-  if (TL.currentTurn !== 0) return;
+  var mySlot = _wsOnline ? _wsMyIndex : 0;
+  if (TL.currentTurn !== mySlot) return;
   if (!TL.selected.length) { notify(t('selectCards')); return; }
   var combo = detectCombo(TL.selected);
   if (!combo) { notify(t('badCombo')); return; }
@@ -1309,18 +1325,28 @@ function tlPlay() {
   /* First-play 3♠ rule */
   if (!TL.lastCombo && TL.lastBy === -1) {
     var h3s = false, s3s = false, hi;
-    for (hi = 0; hi < TL.hands[0].length; hi++)  if (TL.hands[0][hi].rank===0 && TL.hands[0][hi].suit===0) { h3s=true; break; }
-    for (hi = 0; hi < TL.selected.length; hi++) if (TL.selected[hi].rank===0  && TL.selected[hi].suit===0) { s3s=true; break; }
+    for (hi = 0; hi < TL.hands[mySlot].length; hi++) if (TL.hands[mySlot][hi].rank===0 && TL.hands[mySlot][hi].suit===0) { h3s=true; break; }
+    for (hi = 0; hi < TL.selected.length; hi++) if (TL.selected[hi].rank===0 && TL.selected[hi].suit===0) { s3s=true; break; }
     if (h3s && !s3s) { notify(t('must3S')); return; }
   }
   SFX.play('play');
-  tlDoPlay(0, combo);
+  /* Send to server when online */
+  if (_wsOnline) {
+    wsSend({ type: 'move', action: 'play', combo: {
+      type: combo.type, rank: combo.rank, suit: combo.suit,
+      ts: combo.ts, len: combo.len, topRank: combo.topRank,
+      cards: combo.cards.map(function (c) { return { r: c.rank, s: c.suit }; })
+    }});
+  }
+  tlDoPlay(mySlot, combo);
 }
 
 function tlPass() {
-  if (TL.currentTurn !== 0 || !TL.lastCombo) return;
+  var mySlot = _wsOnline ? _wsMyIndex : 0;
+  if (TL.currentTurn !== mySlot || !TL.lastCombo) return;
   SFX.play('pass');
-  tlDoPass(0);
+  if (_wsOnline) wsSend({ type: 'move', action: 'pass' });
+  tlDoPass(mySlot);
 }
 
 /* ============================================================
@@ -1336,9 +1362,13 @@ function tlNextActive(from) {
 }
 
 function isBotTurn() {
-  return !TL.gameOver &&
-    TL.finished.indexOf(TL.currentTurn) === -1 &&
-    (TL.currentTurn !== 0 || TL.finished.indexOf(0) !== -1);
+  if (TL.gameOver) return false;
+  if (TL.finished.indexOf(TL.currentTurn) !== -1) return false;
+  /* Online: human slots are NOT bots */
+  if (_wsOnline && _wsHumanSlots.indexOf(TL.currentTurn) !== -1) return false;
+  /* Offline: slot 0 is the local player */
+  if (!_wsOnline && TL.currentTurn === 0) return false;
+  return true;
 }
 
 function tlDoPlay(pid, combo) {
@@ -1836,7 +1866,11 @@ function showScreen(id) {
   if (id === 'menu') checkContinue();
 }
 
-function goMenu() { SFX.play('click'); showScreen('menu'); }
+function goMenu() {
+  SFX.play('click');
+  _wsOnline = false; _wsMyIndex = 0; _wsHumanSlots = [0];
+  showScreen('menu');
+}
 
 function startTienLen() {
   SFX.play('click');
@@ -1956,8 +1990,13 @@ var _wsRoom = '';
 var _wsName = '';
 var _wsRole = ''; /* 'host' | 'guest' */
 
+/* Online game state */
+var _wsOnline      = false;  /* true when playing online */
+var _wsMyIndex     = 0;      /* which seat this client occupies (0-3 for TL, always 0 for XD) */
+var _wsHumanSlots  = [0];    /* which seat indices are real humans (rest = bots) */
+
 /* Server URL — replace with your deployed server address */
-var WS_URL = 'wss://card-games-production.up.railway.app';
+var WS_URL = 'wss://card-games-production.up.railway.app ';
 
 function wsConnect(onOpen) {
   if (WS && WS.readyState <= 1) { if (onOpen) onOpen(); return; }
@@ -2061,9 +2100,15 @@ function wsHandle(msg) {
   }
 }
 
-/* Online TL — apply server move to TL state */
+/* Online TL — set up game from server data */
 function wsStartTL(msg) {
   /* msg.hands: array of 4 hand arrays [{r,s},...] */
+  /* msg.yourIndex: which seat this client is */
+  /* msg.humanSlots: which seats are real humans */
+  _wsOnline     = true;
+  _wsMyIndex    = msg.yourIndex || 0;
+  _wsHumanSlots = msg.humanSlots || [0];
+
   TL.hands = msg.hands.map(function (h) {
     return h.map(function (c) { return new TCard(c.r, c.s); });
   });
@@ -2073,23 +2118,33 @@ function wsStartTL(msg) {
   TL.gameOver  = false;
   clearVPCache();
   showScreen('tienlen');
+  notify(LANG === 'vi' ? '🌐 Chơi Online — Vị trí ' + (msg.yourIndex+1) : '🌐 Online — Seat ' + (msg.yourIndex+1));
   tlRender();
+  /* If first turn is a bot slot, start bot */
+  if (isBotTurn()) setTimeout(tlBotTurn, 1000);
 }
 
 function wsStartXD(msg) {
-  /* Online XD: same as local but with server-provided cards */
-  startXiDach();
-  /* Override dealt cards from server */
-  XD.player = msg.player.map(function (c) { return { rank:c.r, suit:c.s }; });
-  XD.dealer = msg.dealer.map(function (c) { return { rank:c.r, suit:c.s }; });
-  XD.hideDealer = true; XD.phase = 'playing';
+  /* Online XD: each player plays vs a bot dealer with server-dealt cards */
+  _wsOnline  = true;
+  _wsMyIndex = 0; /* in XD, always seat 0 = player */
+  showScreen('xidach');
+  /* Keep existing chips, just start a round */
+  XD.bet  = XD.pendingBet || XD.bet || 50; /* use whatever bet was set */
+  XD.phase = 'playing';
+  XD.player = msg.player.map(function (c) { return { rank: c.r, suit: c.s }; });
+  XD.dealer = msg.dealer.map(function (c) { return { rank: c.r, suit: c.s }; });
+  XD.hideDealer = true;
   _xdAnim = { d: 2, p: 2 };
+  SFX.play('deal');
   xdRender();
+  notify(LANG === 'vi' ? '🌐 Chơi Online — Bài đã được chia!' : '🌐 Online — Cards dealt!');
 }
 
 function wsApplyMove(msg) {
   /* Relay opponent moves to the local game engine */
   if (_lobbyGame === 'tl') {
+    TL.currentTurn = msg.pid;
     if (msg.action === 'play') {
       var combo = {
         type: msg.combo.type, rank: msg.combo.rank,
@@ -2097,10 +2152,17 @@ function wsApplyMove(msg) {
         len: msg.combo.len,   topRank: msg.combo.topRank,
         cards: msg.combo.cards.map(function (c) { return new TCard(c.r, c.s); })
       };
-      TL.currentTurn = msg.pid;
+      /* Remove played cards from the remote player's hand by rank+suit match */
+      combo.cards.forEach(function (pc) {
+        var hand = TL.hands[msg.pid];
+        for (var i = 0; i < hand.length; i++) {
+          if (hand[i].rank === pc.rank && hand[i].suit === pc.suit) {
+            hand.splice(i, 1); break;
+          }
+        }
+      });
       tlDoPlay(msg.pid, combo);
     } else if (msg.action === 'pass') {
-      TL.currentTurn = msg.pid;
       tlDoPass(msg.pid);
     }
   }
