@@ -184,14 +184,20 @@ wss.on('connection', function (ws) {
             room.players.push({ name: 'Bot ' + room.players.length, ws: null, id: room.players.length });
           }
           var deal = dealTL();
-          /* Each human gets their own hand; bots get their hands too but aren't connected */
+          var humanSlots = room.players
+            .map(function (p, i) { return p.ws ? i : -1; })
+            .filter(function (i) { return i !== -1; });
+          var playerNames = room.players.map(function (p) { return p.name; });
+
           room.players.forEach(function (p, idx) {
             if (p.ws && p.ws.readyState === WebSocket.OPEN) {
               send(p.ws, {
-                type: 'start_tl',
-                hands: deal.hands,           /* send all hands — client shows backs for others */
+                type:        'start_tl',
+                hands:       deal.hands,
                 currentTurn: deal.currentTurn,
-                yourIndex: idx
+                yourIndex:   idx,
+                humanSlots:  humanSlots,
+                playerNames: playerNames
               });
             }
           });
